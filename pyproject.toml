@@ -1,6 +1,6 @@
 [project]
 name = "rt-rabbitmq-wrapper"
-version = "0.1.0"
+version = "1.0.0"
 description = "This project contains a wrapper for accessing RabbitMQ exchange from The Runtime Monitor constellation of tools."
 authors = [
   {name = "Carlos Gustavo Lopez Pombo", email = "clpombo@gmail.com"}
