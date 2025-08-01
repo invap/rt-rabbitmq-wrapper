@@ -31,7 +31,6 @@ class RabbitMQ_server_config:
 class RabbitMQ_exchange_config:
     def __init__(self):
         self.exchange = None
-        self.routing_key = None
 
 
 class RabbitMQ_server_connection:
@@ -124,7 +123,7 @@ def connect_to_channel_exchange(
 
 
 def declare_queue(
-    rabbitmq_server_config, rabbitmq_exchange_config, channel, routing_key
+    rabbitmq_server_config, rabbitmq_exchange_config, channel
 ):
     # Declare queue
     try:
@@ -146,7 +145,7 @@ def declare_queue(
         channel.queue_bind(
             exchange=rabbitmq_exchange_config.exchange,
             queue=queue_name,
-            routing_key=routing_key,
+            routing_key='',
         )
     except ChannelClosed:
         logger.error(f"Binding violates server rules.")
@@ -231,11 +230,11 @@ def ack_message(rabbitmq_server_connection, delivery_tag):
         raise RabbitMQError()
 
 
-def publish_message(rabbitmq_server_connection, routing_key, body, properties=None):
+def publish_message(rabbitmq_server_connection, body='', properties=None):
     try:
         rabbitmq_server_connection.channel.basic_publish(
             exchange=rabbitmq_server_connection.exchange,
-            routing_key=routing_key,
+            routing_key='',
             body=body,
             properties=properties,
         )
