@@ -85,19 +85,19 @@ def event_from_dict(dict):
 # Converts a dictionary to a component event
 def _component_event_from_dict(dict):
     try:
-        str = str(dict["timestamp"])+","+dict["component_name"]+","+dict["data"]
+        event = ComponentEvent(dict["component_name"], dict["data"], dict["timestamp"])
     except KeyError:
         logger.error(f"Invalid dictionary key set for building a ComponentEvent.")
         raise EventError()
     else:
-        return str
+        return event
 
 # Converts a dictionary to a timed event
 def _timed_event_from_dict(dict):
     try:
         match dict["event_subtype"]:
             case "clock_pause":
-                event = str(dict["timestamp"])+","+""+ClockPauseEvent(dict["clock_name"], )
+                event = ClockPauseEvent(dict["clock_name"], dict["timestamp"])
             case "clock_reset":
                 event = ClockResetEvent(dict["clock_name"], dict["timestamp"])
             case "clock_resume":

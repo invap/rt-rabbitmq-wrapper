@@ -77,7 +77,7 @@ def _component_event_from_csv(string):
 def _timed_event_from_csv(string):
     split_str = string.split(",")
     try:
-        match dict["event_subtype"]:
+        match split_str[2]:
             case "clock_pause":
                 event = ClockPauseEvent(split_str[3], split_str[0])
             case "clock_reset":
@@ -99,7 +99,7 @@ def _timed_event_from_csv(string):
 def _state_event_from_csv(string):
     split_str = string.split(",")
     try:
-        match dict["event_subtype"]:
+        match split_str[2]:
             case "variable_value_assigned":
                 event = VariableValueAssignedEvent(split_str[3], split_str[4], split_str[0])
             case _:
@@ -115,7 +115,7 @@ def _state_event_from_csv(string):
 def _process_event_from_csv(string):
     split_str = string.split(",")
     try:
-        match dict["event_subtype"]:
+        match split_str[2]:
             case "task_started":
                 event = TaskStartedEvent(split_str[3], split_str[0])
             case "task_finished":
