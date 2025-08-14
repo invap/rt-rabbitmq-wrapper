@@ -1,0 +1,19 @@
+# Copyright (c) 2024 Fundacion Sadosky, info@fundacionsadosky.org.ar
+# Copyright (c) 2024 INVAP, open@invap.com.ar
+# SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
+
+from rt_monitor.reporting.event.event import Event
+
+from abc import abstractmethod
+
+class StateEvent(Event):
+    def __init__(self, timestamp) -> None:
+        super().__init__(timestamp)
+
+    @staticmethod
+    def event_type():
+        return "state_event"
+
+    @staticmethod
+    def decode_with(decoder, encoded_event):
+        return decoder.decode_state_event(encoded_event)

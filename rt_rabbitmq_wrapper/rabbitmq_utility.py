@@ -68,7 +68,7 @@ class RabbitMQ_server_connection(ABC):
             credentials=credentials,
             connection_attempts=self.connection_attempts,
             retry_delay=self.retry_delay,
-            heartbeat=0  # DANGER: no heartbeat because connections might be blocked for unlimited time
+            heartbeat=0  # DANGER: no heartbeat because connections might be blocked for unlimited timestamp
         )
         # Setting up the RabbitMQ connection
         try:
