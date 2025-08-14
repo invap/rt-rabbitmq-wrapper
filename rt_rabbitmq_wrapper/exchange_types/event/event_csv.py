@@ -64,9 +64,12 @@ def event_from_csv(string):
 
 # Converts a dictionary to a component event
 def _component_event_from_csv(string):
-    split_str = string.split(",", 3)
+    split_str = string.split(",")
     try:
-        event = ComponentEvent(split_str[2], bytes(split_str[3], "utf-8").decode("unicode_escape"), split_str[0])
+        event_data_as_array = split_str[3:]
+        event_data_with_escaped_characters = ",".join(event_data_as_array)
+        event_data = bytes(event_data_with_escaped_characters, "utf-8").decode("unicode_escape")
+        event = ComponentEvent(split_str[2], event_data, int(split_str[0]))
     except KeyError:
         logger.error(f"Invalid dictionary key set for building a ComponentEvent.")
         raise EventError()
@@ -79,13 +82,13 @@ def _timed_event_from_csv(string):
     try:
         match split_str[2]:
             case "clock_pause":
-                event = ClockPauseEvent(split_str[3], split_str[0])
+                event = ClockPauseEvent(split_str[3], int(split_str[0]))
             case "clock_reset":
-                event = ClockResetEvent(split_str[3], split_str[0])
+                event = ClockResetEvent(split_str[3], int(split_str[0]))
             case "clock_resume":
-                event = ClockResumeEvent(split_str[3], split_str[0])
+                event = ClockResumeEvent(split_str[3], int(split_str[0]))
             case "clock_start":
-                event = ClockStartEvent(split_str[3], split_str[0])
+                event = ClockStartEvent(split_str[3], int(split_str[0]))
             case _:
                 logger.error(f"Invalid TimeEvent subtype.")
                 raise EventError()
@@ -101,7 +104,7 @@ def _state_event_from_csv(string):
     try:
         match split_str[2]:
             case "variable_value_assigned":
-                event = VariableValueAssignedEvent(split_str[3], split_str[4], split_str[0])
+                event = VariableValueAssignedEvent(split_str[3], split_str[4], int(split_str[0]))
             case _:
                 logger.error(f"Invalid StateEvent subtype.")
                 raise EventError()
@@ -117,11 +120,11 @@ def _process_event_from_csv(string):
     try:
         match split_str[2]:
             case "task_started":
-                event = TaskStartedEvent(split_str[3], split_str[0])
+                event = TaskStartedEvent(split_str[3], int(split_str[0]))
             case "task_finished":
-                event = TaskFinishedEvent(split_str[3], split_str[0])
+                event = TaskFinishedEvent(split_str[3], int(split_str[0]))
             case "checkpoint_reached":
-                event = CheckpointReachedEvent(split_str[3], split_str[0])
+                event = CheckpointReachedEvent(split_str[3], int(split_str[0]))
             case _:
                 logger.error(f"Invalid ProcessEvent subtype.")
                 raise EventError()
