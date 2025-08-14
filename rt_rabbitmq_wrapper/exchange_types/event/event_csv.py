@@ -64,7 +64,7 @@ def event_from_csv(string):
 
 # Converts a dictionary to a component event
 def _component_event_from_csv(string):
-    split_str = string.split(",")
+    split_str = string.split(",", 3)
     try:
         event = ComponentEvent(split_str[2], split_str[3], split_str[0])
     except KeyError:
