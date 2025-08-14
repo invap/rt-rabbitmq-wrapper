@@ -2,6 +2,10 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
+import logging
+# Create a logger for the RabbitMQ utility component
+logger = logging.getLogger(__name__)
+
 from rt_rabbitmq_wrapper.exchange_types.event.event import (
     Event,
     EventError
