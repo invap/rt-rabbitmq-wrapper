@@ -42,13 +42,13 @@ def event_from_csv(string):
     try:
         match split_str[1]:
             case "component_event":
-                event = _component_event_from_csv(str)
+                event = _component_event_from_csv(string)
             case "timed_event":
-                event = _timed_event_from_csv(str)
+                event = _timed_event_from_csv(string)
             case "state_event":
-                event = _state_event_from_csv(str)
+                event = _state_event_from_csv(string)
             case "process_event":
-                event = _process_event_from_csv(str)
+                event = _process_event_from_csv(string)
             case _:
                 logger.error(f"Invalid Event type.")
                 raise EventError()
@@ -108,7 +108,7 @@ def _state_event_from_csv(string):
         return event
 
 # Converts a dictionary to a process event
-def _process_event_from_str(string):
+def _process_event_from_csv(string):
     split_str = string.split(",")
     try:
         match dict["event_subtype"]:
