@@ -66,7 +66,7 @@ def event_from_csv(string):
 def _component_event_from_csv(string):
     split_str = string.split(",", 3)
     try:
-        event = ComponentEvent(split_str[2], split_str[3], split_str[0])
+        event = ComponentEvent(split_str[2], bytes(split_str[3], "utf-8").decode("unicode_escape"), split_str[0])
     except KeyError:
         logger.error(f"Invalid dictionary key set for building a ComponentEvent.")
         raise EventError()
