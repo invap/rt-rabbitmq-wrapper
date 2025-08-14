@@ -25,4 +25,4 @@ class CheckpointReachedEvent(ProcessEvent):
         return decoder.decode_checkpoint_reached_event(encoded_event)
 
     def serialized(self):
-        return f"{self.time()},{self.event_type()},{self.event_subtype()},{self.name()}"
+        return f"{self.timestamp()},{self.event_type()},{self.event_subtype()},{self.name()}"

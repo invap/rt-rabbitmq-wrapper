@@ -29,4 +29,4 @@ class VariableValueAssignedEvent(StateEvent):
         return monitor.process_variable_value_assigned(self)
 
     def serialized(self):
-        return f"{self.time()},{self.event_type()},{self.event_subtype()},{self.variable_name()},{self.variable_value()}"
+        return f"{self.timestamp()},{self.event_type()},{self.event_subtype()},{self.variable_name()},{self.variable_value()}"

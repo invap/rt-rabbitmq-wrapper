@@ -38,5 +38,5 @@ class ComponentEvent(Event):
 
     def serialized(self):
         return (
-            f"{self.time()},{self.event_type()},{self.component_name()},{self.data()}"
+            f"{self.timestamp()},{self.event_type()},{self.component_name()},{self.data()}"
         )

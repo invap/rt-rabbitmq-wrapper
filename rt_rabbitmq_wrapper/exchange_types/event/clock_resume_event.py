@@ -25,4 +25,4 @@ class ClockResumeEvent(TimedEvent):
         return decoder.decode_clock_resume_event(encoded_event)
 
     def serialized(self):
-        return f"{self.time()},{self.event_type()},{self.event_subtype()},{self.clock_name()}"
+        return f"{self.timestamp()},{self.event_type()},{self.event_subtype()},{self.clock_name()}"
