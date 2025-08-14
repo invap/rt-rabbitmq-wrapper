@@ -6,10 +6,7 @@ import logging
 # Create a logger for the RabbitMQ utility component
 logger = logging.getLogger(__name__)
 
-from rt_rabbitmq_wrapper.exchange_types.event.event import (
-    Event,
-    EventError
-)
+from rt_rabbitmq_wrapper.exchange_types.event.event import EventError
 from rt_rabbitmq_wrapper.exchange_types.event.component_event import ComponentEvent
 from rt_rabbitmq_wrapper.exchange_types.event.timed_event import TimedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.clock_pause_event import ClockPauseEvent
@@ -17,7 +14,6 @@ from rt_rabbitmq_wrapper.exchange_types.event.clock_reset_event import ClockRese
 from rt_rabbitmq_wrapper.exchange_types.event.clock_resume_event import ClockResumeEvent
 from rt_rabbitmq_wrapper.exchange_types.event.clock_start_event import ClockStartEvent
 from rt_rabbitmq_wrapper.exchange_types.event.process_event import ProcessEvent
-from rt_rabbitmq_wrapper.exchange_types.event.task_event import TaskEvent
 from rt_rabbitmq_wrapper.exchange_types.event.task_started_event import TaskStartedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.task_finished_event import TaskFinishedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.checkpoint_reached_event import CheckpointReachedEvent
