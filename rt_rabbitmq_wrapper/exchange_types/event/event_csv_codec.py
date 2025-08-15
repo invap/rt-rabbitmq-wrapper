@@ -129,10 +129,10 @@ class EventCSVCoDec:
             case "component_event":
                 return EventCSVCoDec._component_event_from_csv(string)
             case "invalid":
+                logger.error(f"Invalid event csv for Event.")
                 raise InvalidEventCSV()
             case _:
-                # The execution should never match this case because the rt_reporter injects "invalid"
-                # when the event reported is not af any of the above types.
+                logger.error(f"Invalid event csv for Event.")
                 raise InvalidEventCSV()
 
     # Converts a string to a timed event
