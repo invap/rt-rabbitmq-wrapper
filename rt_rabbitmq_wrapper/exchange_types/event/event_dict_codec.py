@@ -6,7 +6,10 @@ import logging
 # Create a logger for the RabbitMQ utility component
 logger = logging.getLogger(__name__)
 
-from rt_rabbitmq_wrapper.exchange_types.event.event_codec_errors import InvalidEvent, InvalidEventDictionary
+from rt_rabbitmq_wrapper.exchange_types.event.event_codec_errors import (
+    InvalidEvent,
+    InvalidEventDict
+)
 from rt_rabbitmq_wrapper.exchange_types.event.timed_event import TimedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.state_event import StateEvent
 from rt_rabbitmq_wrapper.exchange_types.event.component_event import ComponentEvent
@@ -173,10 +176,10 @@ class EventDictCoDec:
                     event = EventDictCoDec._component_event_from_dict(event_dict)
                 case _:
                     logger.error(f"Invalid Event type.")
-                    raise InvalidEventDictionary()
+                    raise InvalidEventDict()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a Event.")
-            raise InvalidEventDictionary()
+            raise InvalidEventDict()
         else:
             return event
 
@@ -195,10 +198,10 @@ class EventDictCoDec:
                     event = ClockStartEvent(event_dict["clock_name"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid TimeEvent subtype.")
-                    raise InvalidEventDictionary()
+                    raise InvalidEventDict()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a TimedEvent.")
-            raise InvalidEventDictionary()
+            raise InvalidEventDict()
         else:
             return event
 
@@ -211,10 +214,10 @@ class EventDictCoDec:
                     event = VariableValueAssignedEvent(event_dict["variable_name"], event_dict["variable_value"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid StateEvent subtype.")
-                    raise InvalidEventDictionary()
+                    raise InvalidEventDict()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a StateEvent.")
-            raise InvalidEventDictionary()
+            raise InvalidEventDict()
         else:
             return event
 
@@ -231,10 +234,10 @@ class EventDictCoDec:
                     event = CheckpointReachedEvent(event_dict["name"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid ProcessEvent subtype.")
-                    raise InvalidEventDictionary()
+                    raise InvalidEventDict()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a ProcessEvent.")
-            raise InvalidEventDictionary()
+            raise InvalidEventDict()
         else:
             return event
 
@@ -245,6 +248,6 @@ class EventDictCoDec:
             event = ComponentEvent(event_dict["component_name"], event_dict["data"], event_dict["timestamp"])
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a ComponentEvent.")
-            raise InvalidEventDictionary()
+            raise InvalidEventDict()
         else:
             return event
