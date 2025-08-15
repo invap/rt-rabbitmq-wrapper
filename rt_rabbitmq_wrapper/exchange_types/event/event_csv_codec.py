@@ -118,18 +118,16 @@ class EventCSVCoDec:
     # Converts a string to an event
     @staticmethod
     def from_csv(string):
-        encoded_event = string.split(",", 3)
-        # encoded_event is a list of strings [timestamp, event type, event, params depending on the specific event type and event]
-        event_type = EventCSVCoDec._event_type_from_csv(encoded_event)
+        event_type = EventCSVCoDec._event_type_from_csv(string)
         match event_type:
             case "timed_event":
-                return EventCSVCoDec._timed_event_from_csv(encoded_event)
+                return EventCSVCoDec._timed_event_from_csv(string)
             case "state_event":
-                return EventCSVCoDec._state_event_from_csv(encoded_event)
+                return EventCSVCoDec._state_event_from_csv(string)
             case "process_event":
-                return EventCSVCoDec._process_event_from_csv(encoded_event)
+                return EventCSVCoDec._process_event_from_csv(string)
             case "component_event":
-                return EventCSVCoDec._component_event_from_csv(encoded_event)
+                return EventCSVCoDec._component_event_from_csv(string)
             case "invalid":
                 raise InvalidEventCSV()
             case _:
@@ -139,211 +137,215 @@ class EventCSVCoDec:
 
     # Converts a string to a timed event
     @staticmethod
-    def _timed_event_from_csv(encoded_event):
-        timed_event_type = EventCSVCoDec._timed_event_type_from_csv(encoded_event)
+    def _timed_event_from_csv(string):
+        timed_event_type = EventCSVCoDec._timed_event_type_from_csv(string)
         match timed_event_type:
             case "clock_start":
-                return EventCSVCoDec._clock_start_event_from_csv(encoded_event)
+                return EventCSVCoDec._clock_start_event_from_csv(string)
             case "clock_pause":
-                return EventCSVCoDec._clock_pause_event_from_csv(encoded_event)
+                return EventCSVCoDec._clock_pause_event_from_csv(string)
             case "clock_resume":
-                return EventCSVCoDec._clock_resume_event_frm_csv(encoded_event)
+                return EventCSVCoDec._clock_resume_event_frm_csv(string)
             case "clock_reset":
-                return EventCSVCoDec._clock_reset_event_from_csv(encoded_event)
+                return EventCSVCoDec._clock_reset_event_from_csv(string)
             case _:
                 raise InvalidEventCSV()
 
     @staticmethod
-    def _timed_event_type_from_csv(encoded_event):
-        try:
-            return encoded_event[2]
-        except IndexError:
+    def _timed_event_type_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[2]
 
     @staticmethod
-    def _clock_start_event_from_csv(encoded_event):
+    def _clock_start_event_from_csv(string):
         return ClockStartEvent(
-            EventCSVCoDec._clock_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._clock_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _clock_pause_event_from_csv(encoded_event):
+    def _clock_pause_event_from_csv(string):
         return ClockPauseEvent(
-            EventCSVCoDec._clock_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._clock_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _clock_resume_event_frm_csv(encoded_event):
+    def _clock_resume_event_frm_csv(string):
         return ClockResumeEvent(
-            EventCSVCoDec._clock_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._clock_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _clock_reset_event_from_csv(encoded_event):
+    def _clock_reset_event_from_csv(string):
         return ClockResetEvent(
-            EventCSVCoDec._clock_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._clock_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _clock_name_from_csv(encoded_event):
-        encoded_parameters = EventCSVCoDec._event_parameters_from_csv(encoded_event)
-        try:
-            return encoded_parameters[1]
-        except IndexError:
+    def _clock_name_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[3]
 
     # Converts a string to a state event
     @staticmethod
-    def _state_event_from_csv(encoded_event):
-        state_event_type = EventCSVCoDec._state_event_type_from_csv(encoded_event)
+    def _state_event_from_csv(string):
+        state_event_type = EventCSVCoDec._state_event_type_from_csv(string)
         match state_event_type:
             case "variable_value_assigned":
-                return EventCSVCoDec._variable_value_assignment_event_from_csv(encoded_event)
+                return EventCSVCoDec._variable_value_assignment_event_from_csv(string)
             case _:
+                logger.error(f"Invalid event csv for StateEvent.")
                 raise InvalidEventCSV()
 
     @staticmethod
-    def _state_event_type_from_csv(encoded_event):
-        try:
-            return encoded_event[2]
-        except IndexError:
+    def _state_event_type_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[2]
 
     @staticmethod
-    def _variable_value_assignment_event_from_csv(encoded_event):
+    def _variable_value_assignment_event_from_csv(string):
         return VariableValueAssignedEvent(
-            EventCSVCoDec._variable_name_from_csv(encoded_event),
-            EventCSVCoDec._variable_value_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._variable_name_from_csv(string),
+            EventCSVCoDec._variable_value_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _variable_name_from_csv(encoded_event):
-        encoded_parameters = EventCSVCoDec._event_parameters_from_csv(encoded_event)
-        try:
-            return encoded_parameters[1]
-        except IndexError:
+    def _variable_name_from_csv(string):
+        split_string = string.split(",", 4)
+        if len(split_string) < 5:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[3]
 
     @staticmethod
-    def _variable_value_from_csv(encoded_event):
-        encoded_parameters = EventCSVCoDec._event_parameters_from_csv(encoded_event)
-        try:
-            return encoded_parameters[2]
-        except IndexError:
+    def _variable_value_from_csv(string):
+        split_string = string.split(",", 4)
+        if len(split_string) < 5:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[4]
 
     @staticmethod
-    def _process_event_from_csv(encoded_event):
-        process_event_type = EventCSVCoDec._process_event_type_from_csv(encoded_event)
+    def _process_event_from_csv(string):
+        process_event_type = EventCSVCoDec._process_event_type_from_csv(string)
         match process_event_type:
             case "task_started":
-                return EventCSVCoDec._task_started_event_from_csv(encoded_event)
+                return EventCSVCoDec._task_started_event_from_csv(string)
             case "task_finished":
-                return EventCSVCoDec._task_finished_event_from_csv(encoded_event)
+                return EventCSVCoDec._task_finished_event_from_csv(string)
             case "checkpoint_reached":
-                return EventCSVCoDec._checkpoint_reached_event_from_csv(encoded_event)
+                return EventCSVCoDec._checkpoint_reached_event_from_csv(string)
             case _:
+                logger.error(f"Invalid event csv.")
                 raise InvalidEventCSV()
 
     @staticmethod
-    def _process_event_type_from_csv(encoded_event):
-        try:
-            return encoded_event[2]
-        except IndexError:
+    def _process_event_type_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[2]
 
     @staticmethod
-    def _task_started_event_from_csv(encoded_event):
+    def _task_started_event_from_csv(string):
         return TaskStartedEvent(
-            EventCSVCoDec._task_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event)
+            EventCSVCoDec._task_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string)
         )
 
     @staticmethod
-    def _task_finished_event_from_csv(encoded_event):
+    def _task_finished_event_from_csv(string):
         return TaskFinishedEvent(
-            EventCSVCoDec._task_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event)
+            EventCSVCoDec._task_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string)
         )
 
     @staticmethod
-    def _checkpoint_reached_event_from_csv(encoded_event):
+    def _checkpoint_reached_event_from_csv(string):
         return CheckpointReachedEvent(
-            EventCSVCoDec._checkpoint_name_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._checkpoint_name_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _task_name_from_csv(encoded_event):
-        encoded_parameters = EventCSVCoDec._event_parameters_from_csv(encoded_event)
-        try:
-            return encoded_parameters[1]
-        except IndexError:
+    def _task_name_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[3]
 
     @staticmethod
-    def _checkpoint_name_from_csv(encoded_event):
-        encoded_parameters = EventCSVCoDec._event_parameters_from_csv(encoded_event)
-        try:
-            return encoded_parameters[1]
-        except IndexError:
+    def _checkpoint_name_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[3]
 
     # Converts a string to a component event
     @staticmethod
-    def _component_event_from_csv(encoded_event):
+    def _component_event_from_csv(string):
         return ComponentEvent(
-            EventCSVCoDec._component_name_from_csv(encoded_event),
-            EventCSVCoDec._event_data_from_csv(encoded_event),
-            EventCSVCoDec._event_timestamp_from_csv(encoded_event),
+            EventCSVCoDec._component_name_from_csv(string),
+            EventCSVCoDec._component_event_data_from_csv(string),
+            EventCSVCoDec._event_timestamp_from_csv(string),
         )
 
     @staticmethod
-    def _component_name_from_csv(encoded_event):
-        try:
-            return encoded_event[2]
-        except IndexError:
+    def _component_name_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[2]
 
     @staticmethod
-    def _event_data_from_csv(encoded_event):
-        try:
-            event_data_as_array = encoded_event[3:]
-        except IndexError:
+    def _component_event_data_from_csv(string):
+        split_string = string.split(",", 3)
+        if len(split_string) < 4:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
-        event_data_with_escaped_characters = ",".join(event_data_as_array)
-        event_data = bytes(event_data_with_escaped_characters, "utf-8").decode(
-            "unicode_escape"
-        )
-        return event_data
+        else:
+            return bytes(split_string[3], "utf-8").decode("unicode_escape")
 
     @staticmethod
-    def _event_type_from_csv(encoded_event):
-        try:
-            return encoded_event[1]
-        except IndexError:
+    def _event_type_from_csv(string):
+        split_string = string.split(",", 2)
+        if len(split_string) < 3:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
+        else:
+            return split_string[1]
 
     @staticmethod
-    def _event_timestamp_from_csv(encoded_event):
-        encoded_parameters = EventCSVCoDec._event_parameters_from_csv(encoded_event)
-        try:
-            t = encoded_parameters[0]
-        except IndexError:
+    def _event_timestamp_from_csv(string):
+        split_string = string.split(",", 2)
+        if len(split_string) < 3:
+            logger.error(f"Invalid event csv.")
             raise InvalidEventCSV()
-        return int(t)
-
-    @staticmethod
-    def _event_parameters_from_csv(encoded_event):
-        try:
-            encoded_time = encoded_event[0]
-            encoded_parameters_without_time = encoded_event[3:]
-        except IndexError:
-            raise InvalidEventCSV()
-        encoded_parameters = [encoded_time] + encoded_parameters_without_time
-        return encoded_parameters
+        else:
+            return int(split_string[0])
