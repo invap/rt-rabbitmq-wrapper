@@ -7,7 +7,7 @@ class InvalidEvent(Exception):
         super().__init__()
 
 
-class InvalidEventDictionary(Exception):
+class InvalidEventDict(Exception):
     def __init__(self):
         super().__init__()
 
