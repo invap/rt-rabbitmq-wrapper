@@ -4,8 +4,6 @@
 
 from rt_rabbitmq_wrapper.exchange_types.event.event import Event
 
-from abc import abstractmethod
-
 class StateEvent(Event):
     def __init__(self, timestamp) -> None:
         super().__init__(timestamp)

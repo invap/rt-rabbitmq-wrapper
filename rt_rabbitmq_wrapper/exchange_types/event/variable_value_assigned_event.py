@@ -21,12 +21,5 @@ class VariableValueAssignedEvent(StateEvent):
     def event_subtype():
         return "variable_value_assigned"
 
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_variable_value_assignment_event(encoded_event)
-
     def process_with(self, monitor):
         return monitor.process_variable_value_assigned(self)
-
-    def serialized(self):
-        return f"{self.timestamp()},{self.event_type()},{self.event_subtype()},{self.variable_name()},{self.variable_value()}"

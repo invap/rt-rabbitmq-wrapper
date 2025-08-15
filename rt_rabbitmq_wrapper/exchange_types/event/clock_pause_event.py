@@ -17,12 +17,5 @@ class ClockPauseEvent(TimedEvent):
     def event_subtype():
         return "clock_pause"
 
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_clock_pause_event(encoded_event)
-
     def process_with(self, monitor):
         return monitor.process_clock_pause(self)
-
-    def serialized(self):
-        return f"{self.timestamp()},{self.event_type()},{self.event_subtype()},{self.clock_name()}"

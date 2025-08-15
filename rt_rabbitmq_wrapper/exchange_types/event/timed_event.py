@@ -11,7 +11,3 @@ class TimedEvent(Event):
     @staticmethod
     def event_type():
         return "timed_event"
-
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_timed_event(encoded_event)

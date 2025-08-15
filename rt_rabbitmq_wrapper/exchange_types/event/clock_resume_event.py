@@ -13,16 +13,9 @@ class ClockResumeEvent(TimedEvent):
     def clock_name(self):
         return self._clock_name
 
-    def process_with(self, monitor):
-        return monitor.process_clock_resume(self)
-
     @staticmethod
     def event_subtype():
         return "clock_resume"
 
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_clock_resume_event(encoded_event)
-
-    def serialized(self):
-        return f"{self.timestamp()},{self.event_type()},{self.event_subtype()},{self.clock_name()}"
+    def process_with(self, monitor):
+        return monitor.process_clock_resume(self)

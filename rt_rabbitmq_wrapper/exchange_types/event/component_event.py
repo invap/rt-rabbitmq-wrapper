@@ -29,14 +29,5 @@ class ComponentEvent(Event):
     def event_subtype():
         raise NoSubtypeError
 
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_component_event(encoded_event)
-
     def process_with(self, monitor):
         return monitor.process_component_event(self)
-
-    def serialized(self):
-        return (
-            f"{self.timestamp()},{self.event_type()},{self.component_name()},{self.data()}"
-        )

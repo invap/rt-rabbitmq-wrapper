@@ -12,7 +12,3 @@ class ProcessEvent(Event):
     @staticmethod
     def event_type():
         return "process_event"
-
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_process_event(encoded_event)

@@ -2,12 +2,6 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
-
-class EventError(Exception):
-    def __init__(self):
-        super().__init__()
-
-
 class Event:
     def __init__(self, timestamp):
         self._timestamp = timestamp
@@ -23,12 +17,5 @@ class Event:
     def event_subtype():
         raise NotImplementedError
 
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        raise NotImplementedError
-
     def process_with(self, monitor):
-        raise NotImplementedError
-
-    def serialized(self):
         raise NotImplementedError
