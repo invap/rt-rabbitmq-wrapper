@@ -3,25 +3,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
 class InvalidEvent(Exception):
-    def __init__(self, event):
+    def __init__(self):
         super().__init__()
-        self._event = event
 
-    def event(self):
-        return self._event
 
 class InvalidEventDictionary(Exception):
-    def __init__(self, event_dict):
+    def __init__(self):
         super().__init__()
-        self._event_dict = event_dict
 
-    def dict(self):
-        return self._event_dict
 
 class InvalidEventCSV(Exception):
-    def __init__(self, event_csv):
+    def __init__(self):
         super().__init__()
-        self._event_csv = event_csv
-
-    def csv(self):
-        return self._event_csv

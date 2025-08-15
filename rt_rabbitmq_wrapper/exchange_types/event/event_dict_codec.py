@@ -36,7 +36,7 @@ class EventDictCoDec:
             return EventDictCoDec._component_event_to_dict(event)
         else:
             logger.error(f"Invalid Event type.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     # Converts a time event to a dictionary
     @staticmethod
@@ -51,7 +51,7 @@ class EventDictCoDec:
             return EventDictCoDec._clock_start_event_to_dict(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     @staticmethod
     def _clock_pause_event_to_dict(event):
@@ -96,7 +96,7 @@ class EventDictCoDec:
             return EventDictCoDec._variable_value_assigned_event_to_dict(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     @staticmethod
     def _variable_value_assigned_event_to_dict(event):
@@ -119,7 +119,7 @@ class EventDictCoDec:
             return EventDictCoDec._checkpoint_reached_event_to_dict(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     @staticmethod
     def _task_started_event_to_dict(event):
@@ -173,10 +173,10 @@ class EventDictCoDec:
                     event = EventDictCoDec._component_event_from_dict(event_dict)
                 case _:
                     logger.error(f"Invalid Event type.")
-                    raise InvalidEventDictionary(event_dict)
+                    raise InvalidEventDictionary()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a Event.")
-            raise InvalidEventDictionary(event_dict)
+            raise InvalidEventDictionary()
         else:
             return event
 
@@ -195,10 +195,10 @@ class EventDictCoDec:
                     event = ClockStartEvent(event_dict["clock_name"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid TimeEvent subtype.")
-                    raise InvalidEventDictionary(event_dict)
+                    raise InvalidEventDictionary()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a TimedEvent.")
-            raise InvalidEventDictionary(event_dict)
+            raise InvalidEventDictionary()
         else:
             return event
 
@@ -211,10 +211,10 @@ class EventDictCoDec:
                     event = VariableValueAssignedEvent(event_dict["variable_name"], event_dict["variable_value"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid StateEvent subtype.")
-                    raise InvalidEventDictionary(event_dict)
+                    raise InvalidEventDictionary()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a StateEvent.")
-            raise InvalidEventDictionary(event_dict)
+            raise InvalidEventDictionary()
         else:
             return event
 
@@ -231,10 +231,10 @@ class EventDictCoDec:
                     event = CheckpointReachedEvent(event_dict["name"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid ProcessEvent subtype.")
-                    raise InvalidEventDictionary(event_dict)
+                    raise InvalidEventDictionary()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a ProcessEvent.")
-            raise InvalidEventDictionary(event_dict)
+            raise InvalidEventDictionary()
         else:
             return event
 
@@ -245,6 +245,6 @@ class EventDictCoDec:
             event = ComponentEvent(event_dict["component_name"], event_dict["data"], event_dict["timestamp"])
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a ComponentEvent.")
-            raise InvalidEventDictionary(event_dict)
+            raise InvalidEventDictionary()
         else:
             return event

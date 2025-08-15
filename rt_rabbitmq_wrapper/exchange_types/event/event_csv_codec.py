@@ -6,7 +6,10 @@ import logging
 # Create a logger for the RabbitMQ utility component
 logger = logging.getLogger(__name__)
 
-from rt_rabbitmq_wrapper.exchange_types.event.event_codec_errors import InvalidEvent
+from rt_rabbitmq_wrapper.exchange_types.event.event_codec_errors import (
+    InvalidEvent,
+    InvalidEventCSV
+)
 from rt_rabbitmq_wrapper.exchange_types.event.timed_event import TimedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.state_event import StateEvent
 from rt_rabbitmq_wrapper.exchange_types.event.component_event import ComponentEvent
@@ -36,7 +39,7 @@ class EventCSVCoDec:
             return EventCSVCoDec._component_event_to_csv(event)
         else:
             logger.error(f"Invalid Event type.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     # Converts a time event to a dictionary
     @staticmethod
@@ -51,7 +54,7 @@ class EventCSVCoDec:
             return EventCSVCoDec._clock_start_event_to_csv(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     @staticmethod
     def _clock_pause_event_to_csv(event):
@@ -76,7 +79,7 @@ class EventCSVCoDec:
             return EventCSVCoDec._variable_value_assigned_event_to_csv(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     @staticmethod
     def _variable_value_assigned_event_to_csv(event):
@@ -93,7 +96,7 @@ class EventCSVCoDec:
             return EventCSVCoDec._checkpoint_reached_event_to_csv(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent(event)
+            raise InvalidEvent()
 
     @staticmethod
     def _task_started_event_to_csv(event):
@@ -128,11 +131,11 @@ class EventCSVCoDec:
             case "component_event":
                 return EventCSVCoDec._component_event_from_csv(encoded_event)
             case "invalid":
-                raise InvalidEvent(encoded_event)
+                raise InvalidEventCSV()
             case _:
                 # The execution should never match this case because the rt_reporter injects "invalid"
                 # when the event reported is not af any of the above types.
-                raise InvalidEvent(encoded_event)
+                raise InvalidEventCSV()
 
     # Converts a string to a timed event
     @staticmethod
@@ -148,14 +151,14 @@ class EventCSVCoDec:
             case "clock_reset":
                 return EventCSVCoDec._clock_reset_event_from_csv(encoded_event)
             case _:
-                raise InvalidEvent(encoded_event)
+                raise InvalidEventCSV()
 
     @staticmethod
     def _timed_event_type_from_csv(encoded_event):
         try:
             return encoded_event[2]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _clock_start_event_from_csv(encoded_event):
@@ -191,7 +194,7 @@ class EventCSVCoDec:
         try:
             return encoded_parameters[1]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     # Converts a string to a state event
     @staticmethod
@@ -201,14 +204,14 @@ class EventCSVCoDec:
             case "variable_value_assigned":
                 return EventCSVCoDec._variable_value_assignment_event_from_csv(encoded_event)
             case _:
-                raise InvalidEvent(encoded_event)
+                raise InvalidEventCSV()
 
     @staticmethod
     def _state_event_type_from_csv(encoded_event):
         try:
             return encoded_event[2]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _variable_value_assignment_event_from_csv(encoded_event):
@@ -224,7 +227,7 @@ class EventCSVCoDec:
         try:
             return encoded_parameters[1]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _variable_value_from_csv(encoded_event):
@@ -232,7 +235,7 @@ class EventCSVCoDec:
         try:
             return encoded_parameters[2]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _process_event_from_csv(encoded_event):
@@ -245,14 +248,14 @@ class EventCSVCoDec:
             case "checkpoint_reached":
                 return EventCSVCoDec._checkpoint_reached_event_from_csv(encoded_event)
             case _:
-                raise InvalidEvent(encoded_event)
+                raise InvalidEventCSV()
 
     @staticmethod
     def _process_event_type_from_csv(encoded_event):
         try:
             return encoded_event[2]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _task_started_event_from_csv(encoded_event):
@@ -281,7 +284,7 @@ class EventCSVCoDec:
         try:
             return encoded_parameters[1]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _checkpoint_name_from_csv(encoded_event):
@@ -289,7 +292,7 @@ class EventCSVCoDec:
         try:
             return encoded_parameters[1]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     # Converts a string to a component event
     @staticmethod
@@ -305,14 +308,14 @@ class EventCSVCoDec:
         try:
             return encoded_event[2]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _event_data_from_csv(encoded_event):
         try:
             event_data_as_array = encoded_event[3:]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
         event_data_with_escaped_characters = ",".join(event_data_as_array)
         event_data = bytes(event_data_with_escaped_characters, "utf-8").decode(
             "unicode_escape"
@@ -324,7 +327,7 @@ class EventCSVCoDec:
         try:
             return encoded_event[1]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
 
     @staticmethod
     def _event_timestamp_from_csv(encoded_event):
@@ -332,7 +335,7 @@ class EventCSVCoDec:
         try:
             t = encoded_parameters[0]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
         return int(t)
 
     @staticmethod
@@ -341,6 +344,6 @@ class EventCSVCoDec:
             encoded_time = encoded_event[0]
             encoded_parameters_without_time = encoded_event[3:]
         except IndexError:
-            raise InvalidEvent(encoded_event)
+            raise InvalidEventCSV()
         encoded_parameters = [encoded_time] + encoded_parameters_without_time
         return encoded_parameters
