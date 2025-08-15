@@ -11,9 +11,17 @@ class InvalidEvent(Exception):
         return self._event
 
 class InvalidEventDictionary(Exception):
-    def __init__(self, dict):
+    def __init__(self, event_dict):
         super().__init__()
-        self._dict = dict
+        self._event_dict = event_dict
 
     def dict(self):
-        return self._dict
+        return self._event_dict
+
+class InvalidEventCSV(Exception):
+    def __init__(self, event_csv):
+        super().__init__()
+        self._event_csv = event_csv
+
+    def csv(self):
+        return self._event_csv
