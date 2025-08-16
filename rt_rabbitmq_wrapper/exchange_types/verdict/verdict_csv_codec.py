@@ -73,15 +73,15 @@ class VerdictCSVCoDec:
 
     @staticmethod
     def _smt2verdict_to_csv(verdict):
-        return "smt2"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+verdict.spec_build_time()+","+verdict.analysis_time()
+        return "smt2"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+f"{verdict.spec_build_time():3f}"+","+f"{verdict.analysis_time():3f}"
 
     @staticmethod
     def _pyverdict_to_csv(verdict):
-        return "py"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+verdict.spec_build_time()+","+verdict.analysis_time()
+        return "py"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+f"{verdict.spec_build_time():3f}"+","+f"{verdict.analysis_time():3f}"
 
     @staticmethod
     def _sympyverdict_to_csv(verdict):
-        return "sympy"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+verdict.spec_build_time()+","+verdict.analysis_time()
+        return "sympy"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+f"{verdict.spec_build_time():3f}"+","+f"{verdict.analysis_time():3f}"
 
     @staticmethod
     def from_csv(string):
