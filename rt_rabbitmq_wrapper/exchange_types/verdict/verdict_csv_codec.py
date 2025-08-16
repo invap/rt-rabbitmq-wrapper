@@ -165,7 +165,7 @@ class VerdictCSVCoDec:
             raise InvalidVerdictCSV()
         else:
             try:
-                verdict = SMT2Verdict(int(split_string[1]), split_string[2], SMT2Verdict.VERDICT[split_string[3]], split_string[4], split_string[5])
+                verdict = SMT2Verdict(int(split_string[1]), split_string[2], SMT2Verdict.VERDICT[split_string[3]], float(split_string[4]), float(split_string[5]))
             except (IndexError, KeyError):
                 logger.error(f"Invalid verdict csv.")
                 raise InvalidVerdictCSV()
@@ -180,7 +180,7 @@ class VerdictCSVCoDec:
             raise InvalidVerdictCSV()
         else:
             try:
-                verdict = PyVerdict(int(split_string[1]), split_string[2], PyVerdict.VERDICT[split_string[3]], split_string[4], split_string[5])
+                verdict = PyVerdict(int(split_string[1]), split_string[2], PyVerdict.VERDICT[split_string[3]], float(split_string[4]), float(split_string[5]))
             except (IndexError, KeyError):
                 logger.error(f"Invalid verdict csv.")
                 raise InvalidVerdictCSV()
@@ -195,7 +195,7 @@ class VerdictCSVCoDec:
             raise InvalidVerdictCSV()
         else:
             try:
-                verdict = SymPyVerdict(int(split_string[1]), split_string[2], SymPyVerdict.VERDICT[split_string[3]], split_string[4], split_string[5])
+                verdict = SymPyVerdict(int(split_string[1]), split_string[2], SymPyVerdict.VERDICT[split_string[3]], float(split_string[4]), float(split_string[5]))
             except (IndexError, KeyError):
                 logger.error(f"Invalid verdict csv.")
                 raise InvalidVerdictCSV()
