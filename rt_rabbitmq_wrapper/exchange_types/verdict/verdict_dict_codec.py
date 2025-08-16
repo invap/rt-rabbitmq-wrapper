@@ -7,6 +7,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 from rt_rabbitmq_wrapper.exchange_types.verdict.verdict import (
+    ProcessVerdict,
+    TaskStartedVerdict,
+    TaskFinishedVerdict,
+    CheckpointReachedVerdict,
+    AnalysisVerdict,
     SMT2Verdict,
     PyVerdict,
     SymPyVerdict
@@ -17,11 +22,62 @@ from rt_rabbitmq_wrapper.exchange_types.verdict.verdict_codec_errors import (
 )
 
 
-# Raises: InvalidEvent()
+# Raises: InvalidVerdict()
 class VerdictDictCoDec:
-    # Converts an event to a dictionary
+    # Converts a verdict to a dictionary
     @staticmethod
     def to_dict(verdict):
+        if isinstance(verdict, ProcessVerdict):
+            return VerdictDictCoDec._process_verdict_to_dict(verdict)
+        elif isinstance(verdict, AnalysisVerdict):
+            return VerdictDictCoDec._analysis_verdict_to_dict(verdict)
+        else:
+            logger.error(f"Invalid verdict type.")
+            raise InvalidVerdict()
+
+    # Converts a process verdict to a dictionary
+    @staticmethod
+    def _process_verdict_to_dict(verdict):
+        if isinstance(verdict, TaskStartedVerdict):
+            return VerdictDictCoDec._task_started_verdict_to_dict(verdict)
+        elif isinstance(verdict, TaskFinishedVerdict):
+            return VerdictDictCoDec._task_finished_verdict_to_dict(verdict)
+        elif isinstance(verdict, CheckpointReachedVerdict):
+            return VerdictDictCoDec._checkpoint_reached_verdict_to_dict(verdict)
+        else:
+            logger.error(f"Invalid process verdict type.")
+            raise InvalidVerdict()
+
+    @staticmethod
+    def _task_started_verdict_to_dict(verdict):
+        return {
+            "type": "task_started",
+            "timestamp": verdict.timestamp(),
+            "task_name": verdict.task_name(),
+            "verdict": verdict.verdict()
+        }
+
+    @staticmethod
+    def _task_finished_verdict_to_dict(verdict):
+        return {
+            "type": "task_finished",
+            "timestamp": verdict.timestamp(),
+            "task_name": verdict.task_name(),
+            "verdict": verdict.verdict()
+        }
+
+    @staticmethod
+    def _checkpoint_reached_verdict_to_dict(verdict):
+        return {
+            "type": "checkpoint_reached",
+            "timestamp": verdict.timestamp(),
+            "checkpoint_name": verdict.checkpoint_name(),
+            "verdict": verdict.verdict()
+        }
+
+    # Converts an analysis verdict to a dictionary
+    @staticmethod
+    def _analysis_verdict_to_dict(verdict):
         if isinstance(verdict, SMT2Verdict):
             return VerdictDictCoDec._smt2verdict_to_dict(verdict)
         elif isinstance(verdict, PyVerdict):
@@ -29,15 +85,15 @@ class VerdictDictCoDec:
         elif isinstance(verdict, SymPyVerdict):
             return VerdictDictCoDec._sympyverdict_to_dict(verdict)
         else:
-            logger.error(f"Invalid Event type.")
+            logger.error(f"Invalid analysis verdict type.")
             raise InvalidVerdict()
 
     @staticmethod
     def _smt2verdict_to_dict(verdict):
         return {
-            "format": "smt2",
+            "type": "smt2",
             "timestamp": verdict.timestamp(),
-            "property": verdict.property(),
+            "property_name": verdict.property_name(),
             "verdict": verdict.verdict(),
             "spec_build_time": verdict.spec_build_time(),
             "analysis_time": verdict.analysis_time()
@@ -46,9 +102,9 @@ class VerdictDictCoDec:
     @staticmethod
     def _pyverdict_to_dict(verdict):
         return {
-            "format": "py",
+            "type": "py",
             "timestamp": verdict.timestamp(),
-            "property": verdict.property(),
+            "property_name": verdict.property_name(),
             "verdict": verdict.verdict(),
             "spec_build_time": verdict.spec_build_time(),
             "analysis_time": verdict.analysis_time()
@@ -57,9 +113,9 @@ class VerdictDictCoDec:
     @staticmethod
     def _sympyverdict_to_dict(verdict):
         return {
-            "format": "sympy",
+            "type": "sympy",
             "timestamp": verdict.timestamp(),
-            "property": verdict.property(),
+            "property_name": verdict.property_name(),
             "verdict": verdict.verdict(),
             "spec_build_time": verdict.spec_build_time(),
             "analysis_time": verdict.analysis_time()
@@ -68,11 +124,29 @@ class VerdictDictCoDec:
     @staticmethod
     def from_dict(verdict_dict):
         try:
-            match verdict_dict["format"]:
+            match verdict_dict["type"]:
+                case "task_started":
+                    return TaskStartedVerdict(
+                        verdict_dict["timestamp"],
+                        verdict_dict["task_name"],
+                        verdict_dict["verdict"]
+                    )
+                case "task_finished":
+                    return TaskFinishedVerdict(
+                        verdict_dict["timestamp"],
+                        verdict_dict["task_name"],
+                        verdict_dict["verdict"]
+                    )
+                case "checkpoint_reached":
+                    return CheckpointReachedVerdict(
+                        verdict_dict["timestamp"],
+                        verdict_dict["checkpoint_name"],
+                        verdict_dict["verdict"]
+                    )
                 case "smt2":
                     return SMT2Verdict(
                         verdict_dict["timestamp"],
-                        verdict_dict["property"],
+                        verdict_dict["property_name"],
                         verdict_dict["verdict"],
                         verdict_dict["spec_build_time"],
                         verdict_dict["analysis_time"]
@@ -80,7 +154,7 @@ class VerdictDictCoDec:
                 case "py":
                     return PyVerdict(
                         verdict_dict["timestamp"],
-                        verdict_dict["property"],
+                        verdict_dict["property_name"],
                         verdict_dict["verdict"],
                         verdict_dict["spec_build_time"],
                         verdict_dict["analysis_time"]
@@ -88,12 +162,11 @@ class VerdictDictCoDec:
                 case "sympy":
                     return SymPyVerdict(
                         verdict_dict["timestamp"],
-                        verdict_dict["property"],
+                        verdict_dict["property_name"],
                         verdict_dict["verdict"],
                         verdict_dict["spec_build_time"],
                         verdict_dict["analysis_time"]
                     )
         except KeyError:
-            logger.error(f"Invalid dictionary key set for building a Verdict.")
+            logger.error(f"Invalid dictionary key set for building a verdict.")
             raise InvalidVerdictDict()
-
