@@ -54,7 +54,7 @@ class VerdictDictCoDec:
             "type": "task_started",
             "timestamp": verdict.timestamp(),
             "task_name": verdict.task_name(),
-            "verdict": verdict.verdict()
+            "verdict": verdict.verdict().name
         }
 
     @staticmethod
@@ -63,7 +63,7 @@ class VerdictDictCoDec:
             "type": "task_finished",
             "timestamp": verdict.timestamp(),
             "task_name": verdict.task_name(),
-            "verdict": verdict.verdict()
+            "verdict": verdict.verdict().name
         }
 
     @staticmethod
@@ -72,7 +72,7 @@ class VerdictDictCoDec:
             "type": "checkpoint_reached",
             "timestamp": verdict.timestamp(),
             "checkpoint_name": verdict.checkpoint_name(),
-            "verdict": verdict.verdict()
+            "verdict": verdict.verdict().name
         }
 
     # Converts an analysis verdict to a dictionary
@@ -94,7 +94,7 @@ class VerdictDictCoDec:
             "type": "smt2",
             "timestamp": verdict.timestamp(),
             "property_name": verdict.property_name(),
-            "verdict": verdict.verdict(),
+            "verdict": verdict.verdict().name,
             "spec_build_time": verdict.spec_build_time(),
             "analysis_time": verdict.analysis_time()
         }
@@ -105,7 +105,7 @@ class VerdictDictCoDec:
             "type": "py",
             "timestamp": verdict.timestamp(),
             "property_name": verdict.property_name(),
-            "verdict": verdict.verdict(),
+            "verdict": verdict.verdict().name,
             "spec_build_time": verdict.spec_build_time(),
             "analysis_time": verdict.analysis_time()
         }
@@ -116,7 +116,7 @@ class VerdictDictCoDec:
             "type": "sympy",
             "timestamp": verdict.timestamp(),
             "property_name": verdict.property_name(),
-            "verdict": verdict.verdict(),
+            "verdict": verdict.verdict().name,
             "spec_build_time": verdict.spec_build_time(),
             "analysis_time": verdict.analysis_time()
         }
@@ -126,47 +126,71 @@ class VerdictDictCoDec:
         try:
             match verdict_dict["type"]:
                 case "task_started":
-                    return TaskStartedVerdict(
-                        verdict_dict["timestamp"],
-                        verdict_dict["task_name"],
-                        verdict_dict["verdict"]
-                    )
+                    try:
+                        return TaskStartedVerdict(
+                            verdict_dict["timestamp"],
+                            verdict_dict["task_name"],
+                            ProcessVerdict.VERDICT[verdict_dict["verdict"]]
+                        )
+                    except KeyError:
+                        logger.error(f"Invalid verdict.")
+                        raise InvalidVerdictDict()
                 case "task_finished":
-                    return TaskFinishedVerdict(
-                        verdict_dict["timestamp"],
-                        verdict_dict["task_name"],
-                        verdict_dict["verdict"]
-                    )
+                    try:
+                        return TaskFinishedVerdict(
+                            verdict_dict["timestamp"],
+                            verdict_dict["task_name"],
+                            ProcessVerdict.VERDICT[verdict_dict["verdict"]]
+                        )
+                    except KeyError:
+                        logger.error(f"Invalid verdict.")
+                        raise InvalidVerdictDict()
                 case "checkpoint_reached":
-                    return CheckpointReachedVerdict(
-                        verdict_dict["timestamp"],
-                        verdict_dict["checkpoint_name"],
-                        verdict_dict["verdict"]
-                    )
+                    try:
+                        return CheckpointReachedVerdict(
+                            verdict_dict["timestamp"],
+                            verdict_dict["checkpoint_name"],
+                            ProcessVerdict.VERDICT[verdict_dict["verdict"]]
+                        )
+                    except KeyError:
+                        logger.error(f"Invalid verdict.")
+                        raise InvalidVerdictDict()
                 case "smt2":
-                    return SMT2Verdict(
-                        verdict_dict["timestamp"],
-                        verdict_dict["property_name"],
-                        verdict_dict["verdict"],
-                        verdict_dict["spec_build_time"],
-                        verdict_dict["analysis_time"]
-                    )
+                    try:
+                        return SMT2Verdict(
+                            verdict_dict["timestamp"],
+                            verdict_dict["property_name"],
+                            SMT2Verdict.VERDICT[verdict_dict["verdict"]],
+                            verdict_dict["spec_build_time"],
+                            verdict_dict["analysis_time"]
+                        )
+                    except KeyError:
+                        logger.error(f"Invalid verdict.")
+                        raise InvalidVerdictDict()
                 case "py":
-                    return PyVerdict(
-                        verdict_dict["timestamp"],
-                        verdict_dict["property_name"],
-                        verdict_dict["verdict"],
-                        verdict_dict["spec_build_time"],
-                        verdict_dict["analysis_time"]
-                    )
+                    try:
+                        return PyVerdict(
+                            verdict_dict["timestamp"],
+                            verdict_dict["property_name"],
+                            PyVerdict.VERDICT[verdict_dict["verdict"]],
+                            verdict_dict["spec_build_time"],
+                            verdict_dict["analysis_time"]
+                        )
+                    except KeyError:
+                        logger.error(f"Invalid verdict.")
+                        raise InvalidVerdictDict()
                 case "sympy":
-                    return SymPyVerdict(
-                        verdict_dict["timestamp"],
-                        verdict_dict["property_name"],
-                        verdict_dict["verdict"],
-                        verdict_dict["spec_build_time"],
-                        verdict_dict["analysis_time"]
-                    )
+                    try:
+                        return SymPyVerdict(
+                            verdict_dict["timestamp"],
+                            verdict_dict["property_name"],
+                            SymPyVerdict.VERDICT[verdict_dict["verdict"]],
+                            verdict_dict["spec_build_time"],
+                            verdict_dict["analysis_time"]
+                        )
+                    except KeyError:
+                        logger.error(f"Invalid verdict.")
+                        raise InvalidVerdictDict()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a verdict.")
             raise InvalidVerdictDict()
