@@ -6,7 +6,7 @@ import logging
 # Create a logger for the RabbitMQ utility component
 logger = logging.getLogger(__name__)
 
-from verdict_codec_errors import (
+from rt_rabbitmq_wrapper.exchange_types.verdict.verdict_codec_errors import (
     VerdictTypeError,
     VerdictDictError
 )
