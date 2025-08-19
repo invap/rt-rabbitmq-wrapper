@@ -10,7 +10,7 @@ class Specification:
 
     @property
     def property_name(self):
-        return self.property_name
+        return self._property_name
 
     @property
     def timestamp(self):
