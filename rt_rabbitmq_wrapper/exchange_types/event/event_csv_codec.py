@@ -7,8 +7,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 from rt_rabbitmq_wrapper.exchange_types.event.event_codec_errors import (
-    InvalidEvent,
-    InvalidEventCSV
+    EventTypeError,
+    EventCSVError
 )
 from rt_rabbitmq_wrapper.exchange_types.event.timed_event import TimedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.state_event import StateEvent
@@ -24,9 +24,9 @@ from rt_rabbitmq_wrapper.exchange_types.event.task_finished_event import TaskFin
 from rt_rabbitmq_wrapper.exchange_types.event.checkpoint_reached_event import CheckpointReachedEvent
 
 
-# Raises: InvalidEvent()
+# Raises: EventTypeError()
 class EventCSVCoDec:
-    # Converts an event to a dictionary
+    # Converts an spec to a dictionary
     @staticmethod
     def to_csv(event):
         if isinstance(event, TimedEvent):
@@ -39,9 +39,9 @@ class EventCSVCoDec:
             return EventCSVCoDec._component_event_to_csv(event)
         else:
             logger.error(f"Invalid Event type.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
-    # Converts a time event to a dictionary
+    # Converts a time spec to a dictionary
     @staticmethod
     def _timed_event_to_csv(event):
         if isinstance(event, ClockPauseEvent):
@@ -54,7 +54,7 @@ class EventCSVCoDec:
             return EventCSVCoDec._clock_start_event_to_csv(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
     @staticmethod
     def _clock_pause_event_to_csv(event):
@@ -72,20 +72,20 @@ class EventCSVCoDec:
     def _clock_start_event_to_csv(event):
         return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.clock_name()
 
-    # Converts a state event to a dictionary
+    # Converts a state spec to a dictionary
     @staticmethod
     def _state_event_to_csv(event):
         if isinstance(event, VariableValueAssignedEvent):
             return EventCSVCoDec._variable_value_assigned_event_to_csv(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
     @staticmethod
     def _variable_value_assigned_event_to_csv(event):
         return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.variable_name() + "," + event.variable_value()
 
-    # Converts a process event to a dictionary
+    # Converts a process spec to a dictionary
     @staticmethod
     def _process_event_to_csv(event):
         if isinstance(event, TaskStartedEvent):
@@ -96,7 +96,7 @@ class EventCSVCoDec:
             return EventCSVCoDec._checkpoint_reached_event_to_csv(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
     @staticmethod
     def _task_started_event_to_csv(event):
@@ -110,12 +110,12 @@ class EventCSVCoDec:
     def _checkpoint_reached_event_to_csv(event):
         return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.name()
 
-    # Converts a component event to a dictionary
+    # Converts a component spec to a dictionary
     @staticmethod
     def _component_event_to_csv(event):
         return str(event.timestamp()) + "," + event.event_type() + "," + event.component_name() + "," + event.data()
 
-    # Converts a string to an event
+    # Converts a string to an spec
     @staticmethod
     def from_csv(string):
         event_type = EventCSVCoDec._event_type_from_csv(string)
@@ -130,12 +130,12 @@ class EventCSVCoDec:
                 return EventCSVCoDec._component_event_from_csv(string)
             case "invalid":
                 logger.error(f"Invalid event csv for Event.")
-                raise InvalidEventCSV()
+                raise EventCSVError()
             case _:
                 logger.error(f"Invalid event csv for Event.")
-                raise InvalidEventCSV()
+                raise EventCSVError()
 
-    # Converts a string to a timed event
+    # Converts a string to a timed spec
     @staticmethod
     def _timed_event_from_csv(string):
         timed_event_type = EventCSVCoDec._timed_event_type_from_csv(string)
@@ -149,14 +149,14 @@ class EventCSVCoDec:
             case "clock_reset":
                 return EventCSVCoDec._clock_reset_event_from_csv(string)
             case _:
-                raise InvalidEventCSV()
+                raise EventCSVError()
 
     @staticmethod
     def _timed_event_type_from_csv(string):
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[2]
 
@@ -193,11 +193,11 @@ class EventCSVCoDec:
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[3]
 
-    # Converts a string to a state event
+    # Converts a string to a state spec
     @staticmethod
     def _state_event_from_csv(string):
         state_event_type = EventCSVCoDec._state_event_type_from_csv(string)
@@ -206,14 +206,14 @@ class EventCSVCoDec:
                 return EventCSVCoDec._variable_value_assignment_event_from_csv(string)
             case _:
                 logger.error(f"Invalid event csv for StateEvent.")
-                raise InvalidEventCSV()
+                raise EventCSVError()
 
     @staticmethod
     def _state_event_type_from_csv(string):
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[2]
 
@@ -230,7 +230,7 @@ class EventCSVCoDec:
         split_string = string.split(",", 4)
         if len(split_string) < 5:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[3]
 
@@ -239,7 +239,7 @@ class EventCSVCoDec:
         split_string = string.split(",", 4)
         if len(split_string) < 5:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[4]
 
@@ -255,14 +255,14 @@ class EventCSVCoDec:
                 return EventCSVCoDec._checkpoint_reached_event_from_csv(string)
             case _:
                 logger.error(f"Invalid event csv.")
-                raise InvalidEventCSV()
+                raise EventCSVError()
 
     @staticmethod
     def _process_event_type_from_csv(string):
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[2]
 
@@ -292,7 +292,7 @@ class EventCSVCoDec:
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[3]
 
@@ -301,11 +301,11 @@ class EventCSVCoDec:
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[3]
 
-    # Converts a string to a component event
+    # Converts a string to a component spec
     @staticmethod
     def _component_event_from_csv(string):
         return ComponentEvent(
@@ -319,7 +319,7 @@ class EventCSVCoDec:
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[2]
 
@@ -328,7 +328,7 @@ class EventCSVCoDec:
         split_string = string.split(",", 3)
         if len(split_string) < 4:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return bytes(split_string[3], "utf-8").decode("unicode_escape")
 
@@ -337,7 +337,7 @@ class EventCSVCoDec:
         split_string = string.split(",", 2)
         if len(split_string) < 3:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return split_string[1]
 
@@ -346,6 +346,6 @@ class EventCSVCoDec:
         split_string = string.split(",", 2)
         if len(split_string) < 3:
             logger.error(f"Invalid event csv.")
-            raise InvalidEventCSV()
+            raise EventCSVError()
         else:
             return int(split_string[0])

@@ -7,8 +7,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 from rt_rabbitmq_wrapper.exchange_types.event.event_codec_errors import (
-    InvalidEvent,
-    InvalidEventDict
+    EventTypeError,
+    EventDictError
 )
 from rt_rabbitmq_wrapper.exchange_types.event.timed_event import TimedEvent
 from rt_rabbitmq_wrapper.exchange_types.event.state_event import StateEvent
@@ -24,9 +24,9 @@ from rt_rabbitmq_wrapper.exchange_types.event.task_finished_event import TaskFin
 from rt_rabbitmq_wrapper.exchange_types.event.checkpoint_reached_event import CheckpointReachedEvent
 
 
-# Raises: InvalidEvent()
+# Raises: EventTypeError()
 class EventDictCoDec:
-    # Converts an event to a dictionary
+    # Converts an spec to a dictionary
     @staticmethod
     def to_dict(event):
         if isinstance(event, TimedEvent):
@@ -39,9 +39,9 @@ class EventDictCoDec:
             return EventDictCoDec._component_event_to_dict(event)
         else:
             logger.error(f"Invalid Event type.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
-    # Converts a time event to a dictionary
+    # Converts a time spec to a dictionary
     @staticmethod
     def _timed_event_to_dict(event):
         if isinstance(event, ClockPauseEvent):
@@ -54,7 +54,7 @@ class EventDictCoDec:
             return EventDictCoDec._clock_start_event_to_dict(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
     @staticmethod
     def _clock_pause_event_to_dict(event):
@@ -92,14 +92,14 @@ class EventDictCoDec:
             "clock_name": event.clock_name()
         }
 
-    # Converts a state event to a dictionary
+    # Converts a state spec to a dictionary
     @staticmethod
     def _state_event_to_dict(event):
         if isinstance(event, VariableValueAssignedEvent):
             return EventDictCoDec._variable_value_assigned_event_to_dict(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
     @staticmethod
     def _variable_value_assigned_event_to_dict(event):
@@ -111,7 +111,7 @@ class EventDictCoDec:
             "variable_value": event.variable_value()
         }
 
-    # Converts a process event to a dictionary
+    # Converts a process spec to a dictionary
     @staticmethod
     def _process_event_to_dict(event):
         if isinstance(event, TaskStartedEvent):
@@ -122,7 +122,7 @@ class EventDictCoDec:
             return EventDictCoDec._checkpoint_reached_event_to_dict(event)
         else:
             logger.error(f"Invalid TimeEvent subtype.")
-            raise InvalidEvent()
+            raise EventTypeError()
 
     @staticmethod
     def _task_started_event_to_dict(event):
@@ -151,7 +151,7 @@ class EventDictCoDec:
             "name": event.name()
         }
 
-    # Converts a component event to a dictionary
+    # Converts a component spec to a dictionary
     @staticmethod
     def _component_event_to_dict(event):
         return {
@@ -161,7 +161,7 @@ class EventDictCoDec:
             "data": event.data()
         }
 
-    # Converts a dictionary to an event
+    # Converts a dictionary to an spec
     @staticmethod
     def from_dict(event_dict):
         try:
@@ -176,14 +176,14 @@ class EventDictCoDec:
                     event = EventDictCoDec._component_event_from_dict(event_dict)
                 case _:
                     logger.error(f"Invalid Event type.")
-                    raise InvalidEventDict()
+                    raise EventDictError()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a Event.")
-            raise InvalidEventDict()
+            raise EventDictError()
         else:
             return event
 
-    # Converts a dictionary to a timed event
+    # Converts a dictionary to a timed spec
     @staticmethod
     def _timed_event_from_dict(event_dict):
         try:
@@ -198,14 +198,14 @@ class EventDictCoDec:
                     event = ClockStartEvent(event_dict["clock_name"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid TimeEvent subtype.")
-                    raise InvalidEventDict()
+                    raise EventDictError()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a TimedEvent.")
-            raise InvalidEventDict()
+            raise EventDictError()
         else:
             return event
 
-    # Converts a dictionary to a state event
+    # Converts a dictionary to a state spec
     @staticmethod
     def _state_event_from_dict(event_dict):
         try:
@@ -214,14 +214,14 @@ class EventDictCoDec:
                     event = VariableValueAssignedEvent(event_dict["variable_name"], event_dict["variable_value"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid StateEvent subtype.")
-                    raise InvalidEventDict()
+                    raise EventDictError()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a StateEvent.")
-            raise InvalidEventDict()
+            raise EventDictError()
         else:
             return event
 
-    # Converts a dictionary to a process event
+    # Converts a dictionary to a process spec
     @staticmethod
     def _process_event_from_dict(event_dict):
         try:
@@ -234,20 +234,20 @@ class EventDictCoDec:
                     event = CheckpointReachedEvent(event_dict["name"], event_dict["timestamp"])
                 case _:
                     logger.error(f"Invalid ProcessEvent subtype.")
-                    raise InvalidEventDict()
+                    raise EventDictError()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a ProcessEvent.")
-            raise InvalidEventDict()
+            raise EventDictError()
         else:
             return event
 
-    # Converts a dictionary to a component event
+    # Converts a dictionary to a component spec
     @staticmethod
     def _component_event_from_dict(event_dict):
         try:
             event = ComponentEvent(event_dict["component_name"], event_dict["data"], event_dict["timestamp"])
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a ComponentEvent.")
-            raise InvalidEventDict()
+            raise EventDictError()
         else:
             return event
