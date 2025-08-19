@@ -3,12 +3,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
 from enum import Enum, auto
+from abc import ABC, abstractmethod
 
 
-class Verdict:
+class Verdict(ABC):
     def __init__(self, timestamp, verdict):
         self._timestamp = timestamp
         self._verdict = verdict
+
+    @abstractmethod
+    def __str__(self):
+        pass
 
     def timestamp(self):
         return self._timestamp
@@ -17,13 +22,17 @@ class Verdict:
         return self._verdict
 
 
-class ProcessVerdict(Verdict):
+class ProcessVerdict(ABC, Verdict):
     class VERDICT(Enum):
         PASS = auto()
         FAIL = auto()
 
     def __init__(self, timestamp, verdict) -> None:
         super().__init__(timestamp, verdict)
+
+    @abstractmethod
+    def __str__(self):
+        pass
 
 
 class TaskStartedVerdict(ProcessVerdict):
@@ -34,6 +43,9 @@ class TaskStartedVerdict(ProcessVerdict):
     def task_name(self):
         return self._name
 
+    def __str__(self):
+        return f"Event: task_started - Task name: {self.task_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
+
 
 class TaskFinishedVerdict(ProcessVerdict):
     def __init__(self, timestamp, name, verdict) -> None:
@@ -42,6 +54,9 @@ class TaskFinishedVerdict(ProcessVerdict):
 
     def task_name(self):
         return self._name
+
+    def __str__(self):
+        return f"Event: task_finished - Task name: {self.task_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
 
 
 class CheckpointReachedVerdict(ProcessVerdict):
@@ -52,13 +67,20 @@ class CheckpointReachedVerdict(ProcessVerdict):
     def checkpoint_name(self):
         return self._name
 
+    def __str__(self):
+        return f"Event: checkpoint_reached - Checkpoint name: {self.task_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
 
-class AnalysisVerdict(Verdict):
+
+class AnalysisVerdict(ABC, Verdict):
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, verdict)
         self._property_name = property_name
         self._spec_build_time = spec_build_time
         self._analysis_time = analysis_time
+
+    @abstractmethod
+    def __str__(self):
+        pass
 
     def property_name(self):
         return self._property_name
@@ -78,6 +100,9 @@ class PyVerdict(AnalysisVerdict):
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
 
+    def __str__(self):
+        return f"Analyzed property: {self.property_name()} - Timestamp: {self.timestamp()} - Spec. build time: {self.spec_build_time()} - Analysis time: {self.analysis_time()} - Verdict: {self.verdict()}"
+
 
 class SymPyVerdict(AnalysisVerdict):
     class VERDICT(Enum):
@@ -86,6 +111,9 @@ class SymPyVerdict(AnalysisVerdict):
 
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
+
+    def __str__(self):
+        return f"Analyzed property: {self.property_name()} - Timestamp: {self.timestamp()} - Spec. build time: {self.spec_build_time()} - Analysis time: {self.analysis_time()} - Verdict: {self.verdict()}"
 
 
 class SMT2Verdict(AnalysisVerdict):
@@ -96,3 +124,6 @@ class SMT2Verdict(AnalysisVerdict):
 
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
+
+    def __str__(self):
+        return f"Analyzed property: {self.property_name()} - Timestamp: {self.timestamp()} - Spec. build time: {self.spec_build_time()} - Analysis time: {self.analysis_time()} - Verdict: {self.verdict()}"
