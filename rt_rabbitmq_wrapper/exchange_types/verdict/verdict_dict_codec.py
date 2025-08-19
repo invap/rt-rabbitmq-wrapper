@@ -6,7 +6,7 @@ import logging
 # Create a logger for the RabbitMQ utility component
 logger = logging.getLogger(__name__)
 
-from attic.verdict_codec_errors import (
+from verdict_codec_errors import (
     VerdictTypeError,
     VerdictDictError
 )
