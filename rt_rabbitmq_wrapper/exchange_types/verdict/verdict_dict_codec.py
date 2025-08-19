@@ -52,27 +52,27 @@ class VerdictDictCoDec:
     def _task_started_verdict_to_dict(verdict):
         return {
             "type": "task_started",
-            "timestamp": verdict.timestamp(),
-            "task_name": verdict.task_name(),
-            "verdict": verdict.verdict().name
+            "timestamp": verdict.timestamp,
+            "task_name": verdict.task_name,
+            "verdict": verdict.verdict.name
         }
 
     @staticmethod
     def _task_finished_verdict_to_dict(verdict):
         return {
             "type": "task_finished",
-            "timestamp": verdict.timestamp(),
-            "task_name": verdict.task_name(),
-            "verdict": verdict.verdict().name
+            "timestamp": verdict.timestamp,
+            "task_name": verdict.task_name,
+            "verdict": verdict.verdict.name
         }
 
     @staticmethod
     def _checkpoint_reached_verdict_to_dict(verdict):
         return {
             "type": "checkpoint_reached",
-            "timestamp": verdict.timestamp(),
-            "checkpoint_name": verdict.checkpoint_name(),
-            "verdict": verdict.verdict().name
+            "timestamp": verdict.timestamp,
+            "checkpoint_name": verdict.checkpoint_name,
+            "verdict": verdict.verdict.name
         }
 
     # Converts an analysis verdict to a dictionary
@@ -92,33 +92,33 @@ class VerdictDictCoDec:
     def _smt2verdict_to_dict(verdict):
         return {
             "type": "smt2",
-            "timestamp": verdict.timestamp(),
-            "property_name": verdict.property_name(),
-            "verdict": verdict.verdict().name,
-            "spec_build_time": verdict.spec_build_time(),
-            "analysis_time": verdict.analysis_time()
+            "timestamp": verdict.timestamp,
+            "property_name": verdict.property_name,
+            "verdict": verdict.verdict.name,
+            "spec_build_time": verdict.spec_build_time,
+            "analysis_time": verdict.analysis_time
         }
 
     @staticmethod
     def _pyverdict_to_dict(verdict):
         return {
             "type": "py",
-            "timestamp": verdict.timestamp(),
-            "property_name": verdict.property_name(),
-            "verdict": verdict.verdict().name,
-            "spec_build_time": verdict.spec_build_time(),
-            "analysis_time": verdict.analysis_time()
+            "timestamp": verdict.timestamp,
+            "property_name": verdict.property_name,
+            "verdict": verdict.verdict.name,
+            "spec_build_time": verdict.spec_build_time,
+            "analysis_time": verdict.analysis_time
         }
 
     @staticmethod
     def _sympyverdict_to_dict(verdict):
         return {
             "type": "sympy",
-            "timestamp": verdict.timestamp(),
-            "property_name": verdict.property_name(),
-            "verdict": verdict.verdict().name,
-            "spec_build_time": verdict.spec_build_time(),
-            "analysis_time": verdict.analysis_time()
+            "timestamp": verdict.timestamp,
+            "property_name": verdict.property_name,
+            "verdict": verdict.verdict.name,
+            "spec_build_time": verdict.spec_build_time,
+            "analysis_time": verdict.analysis_time
         }
 
     @staticmethod

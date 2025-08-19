@@ -49,15 +49,15 @@ class VerdictCSVCoDec:
 
     @staticmethod
     def _task_started_verdict_to_dict(verdict):
-        return "task_started"+","+str(verdict.timestamp())+","+verdict.task_name()+","+verdict.verdict().name
+        return "task_started"+","+str(verdict.timestamp)+","+verdict.task_name+","+verdict.verdict.name
 
     @staticmethod
     def _task_finished_verdict_to_dict(verdict):
-        return "task_finished"+","+str(verdict.timestamp())+","+verdict.task_name()+","+verdict.verdict().name
+        return "task_finished"+","+str(verdict.timestamp)+","+verdict.task_name+","+verdict.verdict.name
 
     @staticmethod
     def _checkpoint_reached_verdict_to_dict(verdict):
-        return "checkpoint_reached"+","+str(verdict.timestamp())+","+verdict.checkpoint_name()+","+verdict.verdict().name
+        return "checkpoint_reached"+","+str(verdict.timestamp)+","+verdict.checkpoint_name+","+verdict.verdict.name
 
     @staticmethod
     def _analysis_verdict_to_csv(verdict):
@@ -73,15 +73,15 @@ class VerdictCSVCoDec:
 
     @staticmethod
     def _smt2verdict_to_csv(verdict):
-        return "smt2"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+f"{verdict.spec_build_time():3f}"+","+f"{verdict.analysis_time():3f}"
+        return "smt2"+","+str(verdict.timestamp)+","+verdict.property_name+","+verdict.verdict.name+","+f"{verdict.spec_build_time:3f}"+","+f"{verdict.analysis_time:3f}"
 
     @staticmethod
     def _pyverdict_to_csv(verdict):
-        return "py"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+f"{verdict.spec_build_time():3f}"+","+f"{verdict.analysis_time():3f}"
+        return "py"+","+str(verdict.timestamp)+","+verdict.property_name+","+verdict.verdict.name+","+f"{verdict.spec_build_time:3f}"+","+f"{verdict.analysis_time:3f}"
 
     @staticmethod
     def _sympyverdict_to_csv(verdict):
-        return "sympy"+","+str(verdict.timestamp())+","+verdict.property_name()+","+verdict.verdict().name+","+f"{verdict.spec_build_time():3f}"+","+f"{verdict.analysis_time():3f}"
+        return "sympy"+","+str(verdict.timestamp)+","+verdict.property_name+","+verdict.verdict.name+","+f"{verdict.spec_build_time:3f}"+","+f"{verdict.analysis_time:3f}"
 
     @staticmethod
     def from_csv(string):
