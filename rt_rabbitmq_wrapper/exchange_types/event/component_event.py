@@ -4,6 +4,7 @@
 
 from rt_rabbitmq_wrapper.exchange_types.event.event import Event
 
+
 class NoSubtypeError(Exception):
     def __init__(self):
         super().__init__()

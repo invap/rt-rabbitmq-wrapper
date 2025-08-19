@@ -2,16 +2,14 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
+from abc import ABC
 from rt_rabbitmq_wrapper.exchange_types.event.event import Event
 
-class StateEvent(Event):
+
+class StateEvent(Event, ABC):
     def __init__(self, timestamp) -> None:
         super().__init__(timestamp)
 
     @staticmethod
     def event_type():
         return "state_event"
-
-    @staticmethod
-    def decode_with(decoder, encoded_event):
-        return decoder.decode_state_event(encoded_event)

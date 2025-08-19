@@ -2,7 +2,10 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
-class Event:
+from abc import ABC, abstractmethod
+
+
+class Event(ABC):
     def __init__(self, timestamp):
         self._timestamp = timestamp
 
@@ -17,5 +20,6 @@ class Event:
     def event_subtype():
         raise NotImplementedError
 
+    @abstractmethod
     def process_with(self, monitor):
         raise NotImplementedError

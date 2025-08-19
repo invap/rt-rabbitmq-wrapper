@@ -2,10 +2,11 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
+from abc import ABC
 from rt_rabbitmq_wrapper.exchange_types.event.process_event import ProcessEvent
 
 
-class TaskEvent(ProcessEvent):
+class TaskEvent(ProcessEvent, ABC):
     def __init__(self, name, time) -> None:
         super().__init__(time)
         self._name = name
