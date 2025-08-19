@@ -47,7 +47,7 @@ class TaskStartedVerdict(ProcessVerdict):
         return self._name
 
     def __str__(self):
-        return f"Event: task_started - Task name: {self.task_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
+        return f"Event: task_started - Task name: {self.task_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict}"
 
 
 class TaskFinishedVerdict(ProcessVerdict):
@@ -60,7 +60,7 @@ class TaskFinishedVerdict(ProcessVerdict):
         return self._name
 
     def __str__(self):
-        return f"Event: task_finished - Task name: {self.task_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
+        return f"Event: task_finished - Task name: {self.task_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict}"
 
 
 class CheckpointReachedVerdict(ProcessVerdict):
@@ -73,7 +73,7 @@ class CheckpointReachedVerdict(ProcessVerdict):
         return self._name
 
     def __str__(self):
-        return f"Event: checkpoint_reached - Checkpoint name: {self.checkpoint_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
+        return f"Event: checkpoint_reached - Checkpoint name: {self.checkpoint_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict}"
 
 
 class AnalysisVerdict(Verdict):
@@ -109,7 +109,7 @@ class PyVerdict(AnalysisVerdict):
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
 
     def __str__(self):
-        return f"Analyzed property: {self.property_name()} - Timestamp: {self.timestamp()} - Spec. build time: {self.spec_build_time()} - Analysis time: {self.analysis_time()} - Verdict: {self.verdict()}"
+        return f"Analyzed property: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict}"
 
 
 class SymPyVerdict(AnalysisVerdict):
@@ -121,7 +121,7 @@ class SymPyVerdict(AnalysisVerdict):
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
 
     def __str__(self):
-        return f"Analyzed property: {self.property_name()} - Timestamp: {self.timestamp()} - Spec. build time: {self.spec_build_time()} - Analysis time: {self.analysis_time()} - Verdict: {self.verdict()}"
+        return f"Analyzed property: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict}"
 
 
 class SMT2Verdict(AnalysisVerdict):
@@ -134,4 +134,4 @@ class SMT2Verdict(AnalysisVerdict):
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
 
     def __str__(self):
-        return f"Analyzed property: {self.property_name()} - Timestamp: {self.timestamp()} - Spec. build time: {self.spec_build_time()} - Analysis time: {self.analysis_time()} - Verdict: {self.verdict()}"
+        return f"Analyzed property: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict}"
