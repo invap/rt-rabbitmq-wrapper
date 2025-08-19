@@ -15,6 +15,10 @@ class Verdict(ABC):
     def __str__(self):
         pass
 
+    @abstractmethod
+    def __repr__(self):
+        pass
+
     @property
     def timestamp(self):
         return self._timestamp
@@ -36,6 +40,10 @@ class ProcessVerdict(Verdict):
     def __str__(self):
         pass
 
+    @abstractmethod
+    def __repr__(self):
+        pass
+
 
 class TaskStartedVerdict(ProcessVerdict):
     def __init__(self, timestamp, name, verdict) -> None:
@@ -48,6 +56,9 @@ class TaskStartedVerdict(ProcessVerdict):
 
     def __str__(self):
         return f"Event: task_started - Task name: {self.task_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict.name}"
+
+    def __repr__(self):
+        return f"task_started(name: {self.task_name}, timestamp: {self.timestamp}, verdict: {self.verdict.name})"
 
 
 class TaskFinishedVerdict(ProcessVerdict):
@@ -62,6 +73,9 @@ class TaskFinishedVerdict(ProcessVerdict):
     def __str__(self):
         return f"Event: task_finished - Task name: {self.task_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict.name}"
 
+    def __repr__(self):
+        return f"task_finished(name: {self.task_name}, timestamp: {self.timestamp}, verdict: {self.verdict.name})"
+
 
 class CheckpointReachedVerdict(ProcessVerdict):
     def __init__(self, timestamp, name, verdict) -> None:
@@ -75,6 +89,9 @@ class CheckpointReachedVerdict(ProcessVerdict):
     def __str__(self):
         return f"Event: checkpoint_reached - Checkpoint name: {self.checkpoint_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict.name}"
 
+    def __repr__(self):
+        return f"checkpoint_reached(name: {self.checkpoint_name}, timestamp: {self.timestamp}, verdict: {self.verdict.name})"
+
 
 class AnalysisVerdict(Verdict):
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
@@ -82,10 +99,6 @@ class AnalysisVerdict(Verdict):
         self._property_name = property_name
         self._spec_build_time = spec_build_time
         self._analysis_time = analysis_time
-
-    @abstractmethod
-    def __str__(self):
-        pass
 
     @property
     def property_name(self):
@@ -99,6 +112,12 @@ class AnalysisVerdict(Verdict):
     def analysis_time(self):
         return self._analysis_time
 
+    def __str__(self):
+        return f"Analysis: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict.name}"
+
+    def __repr__(self):
+        return f"analysis(name = {self.property_name}, timestamp = {self.timestamp}, spec_build_time = {self.spec_build_time}, analysis_time = {self.analysis_time}, verdict = {self.verdict.name})"
+
 
 class PyVerdict(AnalysisVerdict):
     class VERDICT(Enum):
@@ -107,9 +126,6 @@ class PyVerdict(AnalysisVerdict):
 
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
-
-    def __str__(self):
-        return f"Analyzed property: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict.name}"
 
 
 class SymPyVerdict(AnalysisVerdict):
@@ -120,9 +136,6 @@ class SymPyVerdict(AnalysisVerdict):
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
 
-    def __str__(self):
-        return f"Analyzed property: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict.name}"
-
 
 class SMT2Verdict(AnalysisVerdict):
     class VERDICT(Enum):
@@ -132,6 +145,3 @@ class SMT2Verdict(AnalysisVerdict):
 
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, property_name, verdict, spec_build_time, analysis_time)
-
-    def __str__(self):
-        return f"Analyzed property: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict.name}"
