@@ -6,6 +6,10 @@ import logging
 # Create a logger for the RabbitMQ utility component
 logger = logging.getLogger(__name__)
 
+from attic.verdict_codec_errors import (
+    VerdictTypeError,
+    VerdictDictError
+)
 from rt_rabbitmq_wrapper.exchange_types.verdict.verdict import (
     ProcessVerdict,
     TaskStartedVerdict,
@@ -16,13 +20,9 @@ from rt_rabbitmq_wrapper.exchange_types.verdict.verdict import (
     PyVerdict,
     SymPyVerdict
 )
-from rt_rabbitmq_wrapper.exchange_types.verdict.verdict_codec_errors import (
-    InvalidVerdict,
-    InvalidVerdictDict
-)
 
 
-# Raises: InvalidVerdict()
+# Raises: VerdictTypeError()
 class VerdictDictCoDec:
     # Converts a verdict to a dictionary
     @staticmethod
@@ -33,7 +33,7 @@ class VerdictDictCoDec:
             return VerdictDictCoDec._analysis_verdict_to_dict(verdict)
         else:
             logger.error(f"Invalid verdict type.")
-            raise InvalidVerdict()
+            raise VerdictTypeError()
 
     # Converts a process verdict to a dictionary
     @staticmethod
@@ -46,7 +46,7 @@ class VerdictDictCoDec:
             return VerdictDictCoDec._checkpoint_reached_verdict_to_dict(verdict)
         else:
             logger.error(f"Invalid process verdict type.")
-            raise InvalidVerdict()
+            raise VerdictTypeError()
 
     @staticmethod
     def _task_started_verdict_to_dict(verdict):
@@ -86,7 +86,7 @@ class VerdictDictCoDec:
             return VerdictDictCoDec._sympyverdict_to_dict(verdict)
         else:
             logger.error(f"Invalid analysis verdict type.")
-            raise InvalidVerdict()
+            raise VerdictTypeError()
 
     @staticmethod
     def _smt2verdict_to_dict(verdict):
@@ -134,7 +134,7 @@ class VerdictDictCoDec:
                         )
                     except KeyError:
                         logger.error(f"Invalid verdict.")
-                        raise InvalidVerdictDict()
+                        raise VerdictDictError()
                 case "task_finished":
                     try:
                         return TaskFinishedVerdict(
@@ -144,7 +144,7 @@ class VerdictDictCoDec:
                         )
                     except KeyError:
                         logger.error(f"Invalid verdict.")
-                        raise InvalidVerdictDict()
+                        raise VerdictDictError()
                 case "checkpoint_reached":
                     try:
                         return CheckpointReachedVerdict(
@@ -154,7 +154,7 @@ class VerdictDictCoDec:
                         )
                     except KeyError:
                         logger.error(f"Invalid verdict.")
-                        raise InvalidVerdictDict()
+                        raise VerdictDictError()
                 case "smt2":
                     try:
                         return SMT2Verdict(
@@ -166,7 +166,7 @@ class VerdictDictCoDec:
                         )
                     except KeyError:
                         logger.error(f"Invalid verdict.")
-                        raise InvalidVerdictDict()
+                        raise VerdictDictError()
                 case "py":
                     try:
                         return PyVerdict(
@@ -178,7 +178,7 @@ class VerdictDictCoDec:
                         )
                     except KeyError:
                         logger.error(f"Invalid verdict.")
-                        raise InvalidVerdictDict()
+                        raise VerdictDictError()
                 case "sympy":
                     try:
                         return SymPyVerdict(
@@ -190,7 +190,7 @@ class VerdictDictCoDec:
                         )
                     except KeyError:
                         logger.error(f"Invalid verdict.")
-                        raise InvalidVerdictDict()
+                        raise VerdictDictError()
         except KeyError:
             logger.error(f"Invalid dictionary key set for building a verdict.")
-            raise InvalidVerdictDict()
+            raise VerdictDictError()

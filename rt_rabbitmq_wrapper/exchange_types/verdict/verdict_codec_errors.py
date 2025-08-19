@@ -2,16 +2,11 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
-class InvalidVerdict(Exception):
+class VerdictTypeError(Exception):
     def __init__(self):
         super().__init__()
 
 
-class InvalidVerdictDict(Exception):
-    def __init__(self):
-        super().__init__()
-
-
-class InvalidVerdictCSV(Exception):
+class VerdictDictError(Exception):
     def __init__(self):
         super().__init__()
