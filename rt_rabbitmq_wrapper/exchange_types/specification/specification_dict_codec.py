@@ -65,11 +65,11 @@ class SpecificationDictCoDec:
         try:
             match specification_dict["spec_type"]:
                 case "py":
-                    event = SpecificationDictCoDec._pyspecification_from_dict(specification_dict)
+                    specification = SpecificationDictCoDec._pyspecification_from_dict(specification_dict)
                 case "sympy":
-                    event = SpecificationDictCoDec._sympyspecification_from_dict(specification_dict)
+                    specification = SpecificationDictCoDec._sympyspecification_from_dict(specification_dict)
                 case "smt2":
-                    event = SpecificationDictCoDec._smt2specification_from_dict(specification_dict)
+                    specification = SpecificationDictCoDec._smt2specification_from_dict(specification_dict)
                 case _:
                     logger.error(f"Invalid specification type.")
                     raise SpecificationDictError()
@@ -77,16 +77,16 @@ class SpecificationDictCoDec:
             logger.error(f"Invalid dictionary key set for building a specification.")
             raise SpecificationDictError()
         else:
-            return event
+            return specification
 
     @staticmethod
-    def _pyspecification_from_dict(spec):
-        return PySpecification(spec.property_name, spec.timestamp, spec.specification)
+    def _pyspecification_from_dict(specification_dict):
+        return PySpecification(specification_dict["property_name"], specification_dict["timestamp"], specification_dict["specification"])
 
     @staticmethod
-    def _sympyspecification_from_dict(spec):
-        return SymPySpecification(spec.property_name, spec.timestamp, spec.specification)
+    def _sympyspecification_from_dict(specification_dict):
+        return SymPySpecification(specification_dict["property_name"], specification_dict["timestamp"], specification_dict["specification"])
 
     @staticmethod
-    def _smt2specification_from_dict(spec):
-        return SMT2Specification(spec.property_name, spec.timestamp, spec.specification)
+    def _smt2specification_from_dict(specification_dict):
+        return SMT2Specification(specification_dict["property_name"], specification_dict["timestamp"], specification_dict["specification"])
