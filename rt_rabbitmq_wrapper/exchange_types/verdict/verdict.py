@@ -37,10 +37,6 @@ class ProcessVerdict(Verdict):
         super().__init__(timestamp, verdict)
 
     @abstractmethod
-    def __str__(self):
-        pass
-
-    @abstractmethod
     def __repr__(self):
         pass
 
@@ -54,11 +50,8 @@ class TaskStartedVerdict(ProcessVerdict):
     def task_name(self):
         return self._name
 
-    def __str__(self):
-        return f"Event: task_started - Task name: {self.task_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict.name}"
-
     def __repr__(self):
-        return f"task_started(name: {self.task_name}, timestamp: {self.timestamp}, verdict: {self.verdict.name})"
+        return f"(timestamp: {self.timestamp}) - task_started(name: {self.task_name}, verdict: {self.verdict.name})"
 
 
 class TaskFinishedVerdict(ProcessVerdict):
@@ -70,11 +63,8 @@ class TaskFinishedVerdict(ProcessVerdict):
     def task_name(self):
         return self._name
 
-    def __str__(self):
-        return f"Event: task_finished - Task name: {self.task_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict.name}"
-
     def __repr__(self):
-        return f"task_finished(name: {self.task_name}, timestamp: {self.timestamp}, verdict: {self.verdict.name})"
+        return f"(timestamp: {self.timestamp}) - task_finished(name: {self.task_name}, verdict: {self.verdict.name})"
 
 
 class CheckpointReachedVerdict(ProcessVerdict):
@@ -86,11 +76,8 @@ class CheckpointReachedVerdict(ProcessVerdict):
     def checkpoint_name(self):
         return self._name
 
-    def __str__(self):
-        return f"Event: checkpoint_reached - Checkpoint name: {self.checkpoint_name} - Timestamp: {self.timestamp} - Verdict: {self.verdict.name}"
-
     def __repr__(self):
-        return f"checkpoint_reached(name: {self.checkpoint_name}, timestamp: {self.timestamp}, verdict: {self.verdict.name})"
+        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self.checkpoint_name}, verdict: {self.verdict.name})"
 
 
 class AnalysisVerdict(Verdict):
@@ -112,11 +99,8 @@ class AnalysisVerdict(Verdict):
     def analysis_time(self):
         return self._analysis_time
 
-    def __str__(self):
-        return f"Analysis: {self.property_name} - Timestamp: {self.timestamp} - Spec. build time: {self.spec_build_time} - Analysis time: {self.analysis_time} - Verdict: {self.verdict.name}"
-
     def __repr__(self):
-        return f"analysis(name = {self.property_name}, timestamp = {self.timestamp}, spec_build_time = {self.spec_build_time}, analysis_time = {self.analysis_time}, verdict = {self.verdict.name})"
+        return f"(timestamp: {self.timestamp}) - analysis(name: {self.property_name}, spec_build_time: {self.spec_build_time}, analysis_time: {self.analysis_time}, verdict: {self.verdict.name})"
 
 
 class PyVerdict(AnalysisVerdict):
