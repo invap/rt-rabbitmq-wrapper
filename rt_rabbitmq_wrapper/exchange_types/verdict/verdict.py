@@ -15,14 +15,16 @@ class Verdict(ABC):
     def __str__(self):
         pass
 
+    @property
     def timestamp(self):
         return self._timestamp
 
+    @property
     def verdict(self):
         return self._verdict
 
 
-class ProcessVerdict(ABC, Verdict):
+class ProcessVerdict(Verdict):
     class VERDICT(Enum):
         PASS = auto()
         FAIL = auto()
@@ -40,6 +42,7 @@ class TaskStartedVerdict(ProcessVerdict):
         super().__init__(timestamp, verdict)
         self._name = name
 
+    @property
     def task_name(self):
         return self._name
 
@@ -52,6 +55,7 @@ class TaskFinishedVerdict(ProcessVerdict):
         super().__init__(timestamp, verdict)
         self._name = name
 
+    @property
     def task_name(self):
         return self._name
 
@@ -64,14 +68,15 @@ class CheckpointReachedVerdict(ProcessVerdict):
         super().__init__(timestamp, verdict)
         self._name = name
 
+    @property
     def checkpoint_name(self):
         return self._name
 
     def __str__(self):
-        return f"Event: checkpoint_reached - Checkpoint name: {self.task_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
+        return f"Event: checkpoint_reached - Checkpoint name: {self.checkpoint_name()} - Timestamp: {self.timestamp()} - Verdict: {self.verdict()}"
 
 
-class AnalysisVerdict(ABC, Verdict):
+class AnalysisVerdict(Verdict):
     def __init__(self, timestamp, property_name, verdict, spec_build_time, analysis_time) -> None:
         super().__init__(timestamp, verdict)
         self._property_name = property_name
@@ -82,12 +87,15 @@ class AnalysisVerdict(ABC, Verdict):
     def __str__(self):
         pass
 
+    @property
     def property_name(self):
         return self._property_name
 
+    @property
     def spec_build_time(self):
         return self._spec_build_time
 
+    @property
     def analysis_time(self):
         return self._analysis_time
 
