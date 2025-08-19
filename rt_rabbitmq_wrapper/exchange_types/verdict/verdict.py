@@ -20,6 +20,10 @@ class Verdict(ABC):
         return self._verdict
 
     @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
     def __repr__(self):
         pass
 
@@ -31,6 +35,10 @@ class ProcessVerdict(Verdict):
 
     def __init__(self, timestamp, verdict) -> None:
         super().__init__(timestamp, verdict)
+
+    @abstractmethod
+    def __str__(self):
+        pass
 
     @abstractmethod
     def __repr__(self):
@@ -46,6 +54,9 @@ class TaskStartedVerdict(ProcessVerdict):
     def task_name(self):
         return self._name
 
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - task_started(name: {self.task_name}, verdict: {self.verdict.name})"
+
     def __repr__(self):
         return f"(timestamp: {self.timestamp}) - task_started(name: {self.task_name}, verdict: {self.verdict.name})"
 
@@ -59,6 +70,9 @@ class TaskFinishedVerdict(ProcessVerdict):
     def task_name(self):
         return self._name
 
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - task_finished(name: {self.task_name}, verdict: {self.verdict.name})"
+
     def __repr__(self):
         return f"(timestamp: {self.timestamp}) - task_finished(name: {self.task_name}, verdict: {self.verdict.name})"
 
@@ -71,6 +85,9 @@ class CheckpointReachedVerdict(ProcessVerdict):
     @property
     def checkpoint_name(self):
         return self._name
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self.checkpoint_name}, verdict: {self.verdict.name})"
 
     def __repr__(self):
         return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self.checkpoint_name}, verdict: {self.verdict.name})"
@@ -94,6 +111,9 @@ class AnalysisVerdict(Verdict):
     @property
     def analysis_time(self):
         return self._analysis_time
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - analysis(name: {self.property_name}, spec_build_time: {self.spec_build_time:3f}, analysis_time: {self.analysis_time:3f}, verdict: {self.verdict.name})"
 
     def __repr__(self):
         return f"(timestamp: {self.timestamp}) - analysis(name: {self.property_name}, spec_build_time: {self.spec_build_time}, analysis_time: {self.analysis_time}, verdict: {self.verdict.name})"
