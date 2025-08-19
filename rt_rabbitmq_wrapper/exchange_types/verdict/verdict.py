@@ -11,14 +11,6 @@ class Verdict(ABC):
         self._timestamp = timestamp
         self._verdict = verdict
 
-    @abstractmethod
-    def __str__(self):
-        pass
-
-    @abstractmethod
-    def __repr__(self):
-        pass
-
     @property
     def timestamp(self):
         return self._timestamp
@@ -26,6 +18,10 @@ class Verdict(ABC):
     @property
     def verdict(self):
         return self._verdict
+
+    @abstractmethod
+    def __repr__(self):
+        pass
 
 
 class ProcessVerdict(Verdict):
