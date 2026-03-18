@@ -10,21 +10,19 @@ This section provide instructions for setting up the project using [Poetry](http
 ```toml
 [project]
 name = "rt-rabbitmq-wrapper"
-version = "0.1.0"
+version = "2.0.1"
 description = "This project contains a wrapper for accessing RabbitMQ exchange from The Runtime Monitor constellation of tools."
 authors = [
   {name = "Carlos Gustavo Lopez Pombo", email = "clpombo@gmail.com"}
 ]
 license = "SPDX-License-Identifier: AGPL-3.0-or-later"
 readme = "README.md"
-requires-python = ">=3.11,<4.0"
+requires-python = ">=3.11,<3.14"
 packages = [
     { include = "rt_rabbitmq_wrapper"},
 ]
 dependencies = [
     "pika (~=1.3.2)",
-    "pika-stubs (~=0.1.3)",
-    "pip (~=25.1.1)",
     "poetry-core (~=2.1.3)",
 ]
 
@@ -86,9 +84,9 @@ Now that your configuration files are set, you can build the package using poetr
 ```bash
 poetry build
 ```
-This will create two files in a new `dist` directory:
-- A source distribution: [rt_rabbitmq_wrapper-0.1.0.tar.gz](https://github.com/invap/rt-rabbitmq-wrapper/blob/main/dist/rt_rabbitmq_wrapper-0.1.0.tar.gz)
-- A wheel distribution: [rt_rabbitmq_wrapper-0.1.0-py3-none-any.whl](https://github.com/invap/rt-rabbitmq-wrapper/blob/main/dist/rt_rabbitmq_wrapper-0.1.0-py3-none-any.whl)
+This will create two files in the [dist](https://github.com/invap/rt_rabbitmq_wrapper/tree/main/dist/) directory containing:
+- A source distribution file named `rt_rabbitmq_wrapper-[version].tar.gz`
+- A wheel distribution file named `rt_rabbitmq_wrapper-[version]-py3-none-any.whl`
 
 
 ## Install the application as a library locally
@@ -99,21 +97,81 @@ Follow the steps in Section [Build the application as a library with poetry](#bu
 Use the command `pip install dist/rt_rabbitmq_wrapper-0.1.0-py3-none-any.whl`.
 
 
-### Distribute the application as a library
-Follow the steps below for distributing the RR as a library in PyPI:
-1. **Build the application as a library:**
-Follow the steps in Section [Build the application as a library](#build-the-application-as-a-library)
-2. **Upload the package to PyPI:**
-If you want to make your package publicly available, you can upload it to the Python Package Index (PyPI).
-	- Install twine (a tool for uploading packages):
-	```bash
-	pip install twine
-	```
-	- Upload the package:
-	```bash
-	twine upload dist/*
-	```
-	This command will prompt you to enter your PyPI credentials. Once uploaded, others can install your package with `pip install your-package-name`.
+### Distribution Options
+
+#### Option A: PyPI (Public)
+
+1. Configure PyPI repository (if not using TestPyPI):
+```bash
+poetry config pypi-token.pypi your-api-token
+```
+2. Publish to PyPI:
+```bash
+poetry publish
+```
+
+#### Option B: Test PyPI
+
+```bash
+# Configure TestPyPI
+poetry config repositories.testpypi https://test.pypi.org/legacy/
+
+# Publish to TestPyPI
+poetry publish -r testpypi --build
+```
+
+#### Option C: Private/Internal Distribution
+
+Configure private repository:
+```bash
+poetry config repositories.my-private https://your-private-pypi.com/simple/
+poetry config http-basic.my-private username password
+```
+Publish to private repo:
+```bash
+poetry publish -r my-private --build
+```
+
+#### Option D: Direct Distribution
+
+Share the wheel file directly:
+
+```bash
+# The wheel file is in dist/
+ls dist/
+# Share rt_monitor-[version]-py3-none-any.whl
+```
+
+### Version Management
+
+Update version before building:
+
+```bash
+# Patch release (0.1.0 -> 0.1.1)
+poetry version patch
+
+# Minor release (0.1.0 -> 0.2.0)
+poetry version minor
+
+# Major release (0.1.0 -> 1.0.0)
+poetry version major
+
+# Specific version
+poetry version 1.2.3
+```
+
+### Verification
+
+Verify your package:
+
+```bash
+# Check the wheel contents
+poetry run python -c "import rt_monitor; print(rt_monitor.__version__)"
+
+# Or install and test
+pip install dist/rt_monitor-*.whl
+python -c "import rt_monitor"
+```
 
 
 ## Using the The Runtime RabbitMQ wrapper for developing other components
