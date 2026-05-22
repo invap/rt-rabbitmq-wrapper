@@ -26,7 +26,7 @@ from rt_rabbitmq_wrapper.exchange_types.event.checkpoint_reached_event import Ch
 
 # Raises: EventTypeError()
 class EventCSVCoDec:
-    # Converts an spec to a dictionary
+    # Converts an spec to a csv entry
     @staticmethod
     def to_csv(event):
         if isinstance(event, TimedEvent):
@@ -41,7 +41,7 @@ class EventCSVCoDec:
             logger.error(f"Invalid Event type.")
             raise EventTypeError()
 
-    # Converts a time spec to a dictionary
+    # Converts a time spec to a csv entry
     @staticmethod
     def _timed_event_to_csv(event):
         if isinstance(event, ClockPauseEvent):
@@ -58,21 +58,21 @@ class EventCSVCoDec:
 
     @staticmethod
     def _clock_pause_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.clock_name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     @staticmethod
     def _clock_reset_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.clock_name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     @staticmethod
     def _clock_resume_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.clock_name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     @staticmethod
     def _clock_start_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.clock_name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
-    # Converts a state spec to a dictionary
+    # Converts a state spec to a csv entry
     @staticmethod
     def _state_event_to_csv(event):
         if isinstance(event, VariableValueAssignedEvent):
@@ -83,9 +83,9 @@ class EventCSVCoDec:
 
     @staticmethod
     def _variable_value_assigned_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.variable_name() + "," + event.variable_value()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.variable_name()},{event.variable_value()}"
 
-    # Converts a process spec to a dictionary
+    # Converts a process spec to a csv entry
     @staticmethod
     def _process_event_to_csv(event):
         if isinstance(event, TaskStartedEvent):
@@ -100,20 +100,20 @@ class EventCSVCoDec:
 
     @staticmethod
     def _task_started_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.name()}"
 
     @staticmethod
     def _task_finished_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.name()}"
 
     @staticmethod
     def _checkpoint_reached_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.event_subtype() + "," + event.name()
+        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.name()}"
 
-    # Converts a component spec to a dictionary
+    # Converts a component spec to a csv entry
     @staticmethod
     def _component_event_to_csv(event):
-        return str(event.timestamp()) + "," + event.event_type() + "," + event.component_name() + "," + event.data()
+        return f"{event.timestamp()},{event.event_type()},{event.component_name()},{event.data()}"
 
     # Converts a string to an spec
     @staticmethod
@@ -135,7 +135,7 @@ class EventCSVCoDec:
                 logger.error(f"Invalid event csv for Event.")
                 raise EventCSVError()
 
-    # Converts a string to a timed spec
+    # Converts a csv entry to a timed spec
     @staticmethod
     def _timed_event_from_csv(string):
         timed_event_type = EventCSVCoDec._timed_event_type_from_csv(string)
@@ -197,7 +197,7 @@ class EventCSVCoDec:
         else:
             return split_string[3]
 
-    # Converts a string to a state spec
+    # Converts a csv entry to a state spec
     @staticmethod
     def _state_event_from_csv(string):
         state_event_type = EventCSVCoDec._state_event_type_from_csv(string)

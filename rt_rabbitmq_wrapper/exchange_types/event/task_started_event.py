@@ -15,3 +15,9 @@ class TaskStartedEvent(TaskEvent):
 
     def process_with(self, monitor):
         return monitor.process_task_started(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - task_started(name: {self._name})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - task_started(name: {self._name})"

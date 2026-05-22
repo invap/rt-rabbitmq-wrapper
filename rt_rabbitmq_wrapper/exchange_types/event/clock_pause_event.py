@@ -19,3 +19,9 @@ class ClockPauseEvent(TimedEvent):
 
     def process_with(self, monitor):
         return monitor.process_clock_pause(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - clock_pause(clock_name: {self._clock_name})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - clock_pause(clock_name: {self._clock_name})"

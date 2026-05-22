@@ -23,3 +23,9 @@ class VariableValueAssignedEvent(StateEvent):
 
     def process_with(self, monitor):
         return monitor.process_variable_value_assigned(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - variable_value_assigned(variable_name: {self._variable_name}, variable_value: {self._variable_value})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - variable_value_assigned(variable_name: {self._variable_name}, variable_value: {self._variable_value})"

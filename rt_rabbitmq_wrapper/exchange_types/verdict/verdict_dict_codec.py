@@ -51,8 +51,8 @@ class VerdictDictCoDec:
     @staticmethod
     def _task_started_verdict_to_dict(verdict):
         return {
-            "type": "task_started",
             "timestamp": verdict.timestamp,
+            "type": "task_started",
             "task_name": verdict.task_name,
             "verdict": verdict.verdict.name
         }
@@ -60,8 +60,8 @@ class VerdictDictCoDec:
     @staticmethod
     def _task_finished_verdict_to_dict(verdict):
         return {
-            "type": "task_finished",
             "timestamp": verdict.timestamp,
+            "type": "task_finished",
             "task_name": verdict.task_name,
             "verdict": verdict.verdict.name
         }
@@ -69,8 +69,8 @@ class VerdictDictCoDec:
     @staticmethod
     def _checkpoint_reached_verdict_to_dict(verdict):
         return {
-            "type": "checkpoint_reached",
             "timestamp": verdict.timestamp,
+            "type": "checkpoint_reached",
             "checkpoint_name": verdict.checkpoint_name,
             "verdict": verdict.verdict.name
         }
@@ -91,8 +91,8 @@ class VerdictDictCoDec:
     @staticmethod
     def _smt2verdict_to_dict(verdict):
         return {
-            "type": "smt2",
             "timestamp": verdict.timestamp,
+            "type": "smt2",
             "property_name": verdict.property_name,
             "verdict": verdict.verdict.name,
             "spec_build_time": verdict.spec_build_time,
@@ -102,8 +102,8 @@ class VerdictDictCoDec:
     @staticmethod
     def _pyverdict_to_dict(verdict):
         return {
-            "type": "py",
             "timestamp": verdict.timestamp,
+            "type": "py",
             "property_name": verdict.property_name,
             "verdict": verdict.verdict.name,
             "spec_build_time": verdict.spec_build_time,
@@ -113,8 +113,8 @@ class VerdictDictCoDec:
     @staticmethod
     def _sympyverdict_to_dict(verdict):
         return {
-            "type": "sympy",
             "timestamp": verdict.timestamp,
+            "type": "sympy",
             "property_name": verdict.property_name,
             "verdict": verdict.verdict.name,
             "spec_build_time": verdict.spec_build_time,

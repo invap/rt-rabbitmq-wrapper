@@ -2,12 +2,7 @@
 # Copyright (c) 2024 INVAP, open@invap.com.ar
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
-from rt_rabbitmq_wrapper.exchange_types.event.event import Event
-
-
-class NoSubtypeError(Exception):
-    def __init__(self):
-        super().__init__()
+from rt_rabbitmq_wrapper.exchange_types.event.event import Event, NoEventSubtypeError
 
 
 class ComponentEvent(Event):
@@ -28,7 +23,13 @@ class ComponentEvent(Event):
 
     @staticmethod
     def event_subtype():
-        raise NoSubtypeError
+        raise NoEventSubtypeError
 
     def process_with(self, monitor):
         return monitor.process_component_event(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - component_event(component_name: {self._component_name}, data: {self._data})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - component_event(component_name: {self._component_name}, data: {self._data})"

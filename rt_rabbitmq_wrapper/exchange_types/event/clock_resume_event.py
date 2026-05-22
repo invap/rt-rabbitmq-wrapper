@@ -19,3 +19,9 @@ class ClockResumeEvent(TimedEvent):
 
     def process_with(self, monitor):
         return monitor.process_clock_resume(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - clock_resume(clock_name: {self._clock_name})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - clock_resume(clock_name: {self._clock_name})"

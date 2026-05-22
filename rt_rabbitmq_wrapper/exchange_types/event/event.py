@@ -5,6 +5,16 @@
 from abc import ABC, abstractmethod
 
 
+class NoEventTypeError(Exception):
+    def __init__(self):
+        super().__init__()
+
+
+class NoEventSubtypeError(Exception):
+    def __init__(self):
+        super().__init__()
+
+
 class Event(ABC):
     def __init__(self, timestamp):
         self._timestamp = timestamp
@@ -14,12 +24,20 @@ class Event(ABC):
 
     @staticmethod
     def event_type():
-        raise NotImplementedError
+        raise NoEventTypeError
 
     @staticmethod
     def event_subtype():
-        raise NotImplementedError
+        raise NoEventSubtypeError
 
     @abstractmethod
     def process_with(self, monitor):
-        raise NotImplementedError
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __repr__(self):
+        pass

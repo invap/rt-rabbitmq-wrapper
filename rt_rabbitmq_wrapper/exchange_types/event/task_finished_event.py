@@ -15,3 +15,9 @@ class TaskFinishedEvent(TaskEvent):
 
     def process_with(self, monitor):
         return monitor.process_task_finished(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - task_finished(name: {self._name})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - task_finished(name: {self._name})"

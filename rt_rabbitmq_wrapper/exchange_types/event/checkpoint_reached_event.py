@@ -19,3 +19,9 @@ class CheckpointReachedEvent(ProcessEvent):
 
     def process_with(self, monitor):
         return monitor.process_checkpoint_reached(self)
+
+    def __str__(self):
+        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self._name})"
+
+    def __repr__(self):
+        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self._name})"
