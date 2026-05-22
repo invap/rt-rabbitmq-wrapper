@@ -59,37 +59,37 @@ class EventDictCoDec:
     @staticmethod
     def _clock_pause_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "clock_name": event.clock_name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "clock_name": event.clock_name
         }
 
     @staticmethod
     def _clock_reset_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "clock_name": event.clock_name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "clock_name": event.clock_name
         }
 
     @staticmethod
     def _clock_resume_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "clock_name": event.clock_name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "clock_name": event.clock_name
         }
 
     @staticmethod
     def _clock_start_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "clock_name": event.clock_name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "clock_name": event.clock_name
         }
 
     # Converts a state spec to a dictionary
@@ -104,11 +104,11 @@ class EventDictCoDec:
     @staticmethod
     def _variable_value_assigned_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "variable_name": event.variable_name(),
-            "variable_value": event.variable_value()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "variable_name": event.variable_name,
+            "variable_value": event.variable_value
         }
 
     # Converts a process spec to a dictionary
@@ -127,38 +127,38 @@ class EventDictCoDec:
     @staticmethod
     def _task_started_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "name": event.name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "name": event.name
         }
 
     @staticmethod
     def _task_finished_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "name": event.name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "name": event.name
         }
 
     @staticmethod
     def _checkpoint_reached_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "event_subtype": event.event_subtype(),
-            "name": event.name()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "event_subtype": event.event_subtype,
+            "name": event.name
         }
 
     # Converts a component spec to a dictionary
     @staticmethod
     def _component_event_to_dict(event):
         return {
-            "timestamp": event.timestamp(),
-            "event_type": event.event_type(),
-            "component_name": event.component_name(),
-            "data": event.data()
+            "timestamp": event.timestamp,
+            "event_type": event.event_type,
+            "component_name": event.component_name,
+            "data": event.data
         }
 
     # Converts a dictionary to an spec
