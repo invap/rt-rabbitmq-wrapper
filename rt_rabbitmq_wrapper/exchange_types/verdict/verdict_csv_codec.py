@@ -48,15 +48,15 @@ class VerdictCSVCoDec:
 
     @staticmethod
     def _task_started_verdict_to_csv(verdict):
-        return f"{verdict.timestamp},task_started,{verdict.task_name},{verdict.verdict.name}"
+        return f"{verdict.timestamp},process_verdict,task_started,{verdict.task_name},{verdict.verdict.name}"
 
     @staticmethod
     def _task_finished_verdict_to_csv(verdict):
-        return f"{verdict.timestamp},task_finished,{verdict.task_name},{verdict.verdict.name}"
+        return f"{verdict.timestamp},process_verdict,task_finished,{verdict.task_name},{verdict.verdict.name}"
 
     @staticmethod
     def _checkpoint_reached_verdict_to_csv(verdict):
-        return f"{verdict.timestamp},checkpoint_reached,{verdict.checkpoint_name},{verdict.verdict.name}"
+        return f"{verdict.timestamp},process_verdict,checkpoint_reached,{verdict.checkpoint_name},{verdict.verdict.name}"
 
     # Converts an analysis verdict to a csv entry
     @staticmethod
@@ -73,14 +73,14 @@ class VerdictCSVCoDec:
 
     @staticmethod
     def _smt2verdict_to_csv(verdict):
-        return f"{verdict.timestamp},smt2,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
+        return f"{verdict.timestamp},analysis_verdict,smt2,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
 
     @staticmethod
     def _pyverdict_to_csv(verdict):
-        return f"{verdict.timestamp},py,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
+        return f"{verdict.timestamp},analysis_verdict,py,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
     @staticmethod
     def _sympyverdict_to_csv(verdict):
-        return f"{verdict.timestamp},sympy,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
+        return f"{verdict.timestamp},analysis_verdict,sympy,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
 
     @staticmethod
     def from_csv(verdict_str):

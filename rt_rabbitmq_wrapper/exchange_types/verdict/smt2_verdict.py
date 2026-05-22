@@ -18,7 +18,7 @@ class SMT2Verdict(AnalysisVerdict):
 
     @staticmethod
     def verdict_subtype():
-        return "smt2_verdict"
+        return "smt2"
 
     def __str__(self):
         return f"(timestamp: {self.timestamp}) - smt2 analysis(name: {self.property_name}, spec_build_time: {self.spec_build_time:3f}, analysis_time: {self.analysis_time:3f}, verdict: {self.verdict.name})"

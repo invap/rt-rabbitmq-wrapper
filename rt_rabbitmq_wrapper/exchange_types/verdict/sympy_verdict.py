@@ -17,7 +17,7 @@ class SymPyVerdict(AnalysisVerdict):
 
     @staticmethod
     def verdict_subtype():
-        return "sympy_verdict"
+        return "sympy"
 
     def __str__(self):
         return f"(timestamp: {self.timestamp}) - sympy analysis(name: {self.property_name}, spec_build_time: {self.spec_build_time:3f}, analysis_time: {self.analysis_time:3f}, verdict: {self.verdict.name})"
