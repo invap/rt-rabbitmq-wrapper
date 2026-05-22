@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR Fundacion-Sadosky-Commercial
 
 import logging
+# Create a logger for the RabbitMQ utility component
+logger = logging.getLogger(__name__)
 
 from rt_rabbitmq_wrapper.exchange_types.verdict.checkpoint_reached_verdict import CheckpointReachedVerdict
 from rt_rabbitmq_wrapper.exchange_types.verdict.py_verdict import PyVerdict
@@ -10,10 +12,6 @@ from rt_rabbitmq_wrapper.exchange_types.verdict.smt2_verdict import SMT2Verdict
 from rt_rabbitmq_wrapper.exchange_types.verdict.sympy_verdict import SymPyVerdict
 from rt_rabbitmq_wrapper.exchange_types.verdict.task_finished_verdict import TaskFinishedVerdict
 from rt_rabbitmq_wrapper.exchange_types.verdict.task_started_verdict import TaskStartedVerdict
-
-# Create a logger for the RabbitMQ utility component
-logger = logging.getLogger(__name__)
-
 from rt_rabbitmq_wrapper.exchange_types.verdict.analysis_verdict import AnalysisVerdict
 from rt_rabbitmq_wrapper.exchange_types.verdict.process_verdict import ProcessVerdict
 from rt_rabbitmq_wrapper.exchange_types.verdict.verdict_codec_errors import (
