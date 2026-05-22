@@ -73,15 +73,14 @@ class VerdictCSVCoDec:
 
     @staticmethod
     def _smt2verdict_to_csv(verdict):
-        return f"{verdict.timestamp},smt2,{verdict.property_name},{verdict.verdict.name},{verdict.spec_build_time},{verdict.analysis_time}"
+        return f"{verdict.timestamp},smt2,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
 
     @staticmethod
     def _pyverdict_to_csv(verdict):
-        return f"{verdict.timestamp},py,{verdict.property_name},{verdict.verdict.name},{verdict.spec_build_time},{verdict.analysis_time}"
-
+        return f"{verdict.timestamp},py,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
     @staticmethod
     def _sympyverdict_to_csv(verdict):
-        return f"{verdict.timestamp},sympy,{verdict.property_name},{verdict.verdict.name},{verdict.spec_build_time},{verdict.analysis_time}"
+        return f"{verdict.timestamp},sympy,{verdict.property_name},{verdict.verdict.name},{format(verdict.spec_build_time, 'f')},{format(verdict.analysis_time, 'f')}"
 
     @staticmethod
     def from_csv(verdict_str):
