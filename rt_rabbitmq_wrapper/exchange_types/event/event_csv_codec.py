@@ -58,19 +58,19 @@ class EventCSVCoDec:
 
     @staticmethod
     def _clock_pause_event_to_csv(event):
-        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.clock_name}"
 
     @staticmethod
     def _clock_reset_event_to_csv(event):
-        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.clock_name}"
 
     @staticmethod
     def _clock_resume_event_to_csv(event):
-        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.clock_name}"
 
     @staticmethod
     def _clock_start_event_to_csv(event):
-        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.clock_name}"
 
     # Converts a state spec to a csv entry
     @staticmethod
@@ -83,7 +83,7 @@ class EventCSVCoDec:
 
     @staticmethod
     def _variable_value_assigned_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.variable_name()},{event.variable_value()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.variable_name},{event.variable_value}"
 
     # Converts a process spec to a csv entry
     @staticmethod
@@ -100,20 +100,20 @@ class EventCSVCoDec:
 
     @staticmethod
     def _task_started_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.name}"
 
     @staticmethod
     def _task_finished_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.name}"
 
     @staticmethod
     def _checkpoint_reached_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.name()}"
+        return f"{event.timestamp},{event.event_type},{event.event_subtype},{event.name}"
 
     # Converts a component spec to a csv entry
     @staticmethod
     def _component_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.component_name()},{event.data()}"
+        return f"{event.timestamp},{event.event_type},{event.component_name},{event.data}"
 
     # Converts a string to an spec
     @staticmethod
