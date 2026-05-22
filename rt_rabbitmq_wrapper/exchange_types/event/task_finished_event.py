@@ -9,15 +9,15 @@ class TaskFinishedEvent(TaskEvent):
     def __init__(self, name, time) -> None:
         super().__init__(name, time)
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         return "task_finished"
 
     def process_with(self, monitor):
         return monitor.process_task_finished(self)
 
     def __str__(self):
-        return f"(timestamp: {self.timestamp}) - task_finished(name: {self._name})"
+        return f"(timestamp: {self.timestamp}) - task_finished(name: {self.name})"
 
     def __repr__(self):
-        return f"(timestamp: {self.timestamp}) - task_finished(name: {self._name})"
+        return f"(timestamp: {self.timestamp}) - task_finished(name: {self.name})"

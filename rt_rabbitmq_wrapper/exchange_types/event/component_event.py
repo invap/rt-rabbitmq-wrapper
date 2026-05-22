@@ -11,25 +11,27 @@ class ComponentEvent(Event):
         self._component_name = component_name
         self._data = data
 
+    @property
     def component_name(self):
         return self._component_name
 
+    @property
     def data(self):
         return self._data
 
-    @staticmethod
-    def event_type():
+    @property
+    def event_type(self):
         return "component_event"
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         raise NoEventSubtypeError
 
     def process_with(self, monitor):
         return monitor.process_component_event(self)
 
     def __str__(self):
-        return f"(timestamp: {self.timestamp}) - component_event(component_name: {self._component_name}, data: {self._data})"
+        return f"(timestamp: {self.timestamp}) - component_event(component_name: {self.component_name}, data: {self.data})"
 
     def __repr__(self):
-        return f"(timestamp: {self.timestamp}) - component_event(component_name: {self._component_name}, data: {self._data})"
+        return f"(timestamp: {self.timestamp}) - component_event(component_name: {self.component_name}, data: {self.data})"

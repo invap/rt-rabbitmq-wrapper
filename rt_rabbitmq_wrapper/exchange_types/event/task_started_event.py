@@ -9,15 +9,15 @@ class TaskStartedEvent(TaskEvent):
     def __init__(self, name, time) -> None:
         super().__init__(name, time)
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         return "task_started"
 
     def process_with(self, monitor):
         return monitor.process_task_started(self)
 
     def __str__(self):
-        return f"(timestamp: {self.timestamp}) - task_started(name: {self._name})"
+        return f"(timestamp: {self.timestamp}) - task_started(name: {self.name})"
 
     def __repr__(self):
-        return f"(timestamp: {self.timestamp}) - task_started(name: {self._name})"
+        return f"(timestamp: {self.timestamp}) - task_started(name: {self.name})"

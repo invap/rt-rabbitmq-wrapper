@@ -11,21 +11,23 @@ class VariableValueAssignedEvent(StateEvent):
         self._variable_name = variable_name
         self._variable_value = variable_value
 
+    @property
     def variable_name(self):
         return self._variable_name
 
+    @property
     def variable_value(self):
         return self._variable_value
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         return "variable_value_assigned"
 
     def process_with(self, monitor):
         return monitor.process_variable_value_assigned(self)
 
     def __str__(self):
-        return f"(timestamp: {self.timestamp}) - variable_value_assigned(variable_name: {self._variable_name}, variable_value: {self._variable_value})"
+        return f"(timestamp: {self.timestamp}) - variable_value_assigned(variable_name: {self.variable_name}, variable_value: {self.variable_value})"
 
     def __repr__(self):
-        return f"(timestamp: {self.timestamp}) - variable_value_assigned(variable_name: {self._variable_name}, variable_value: {self._variable_value})"
+        return f"(timestamp: {self.timestamp}) - variable_value_assigned(variable_name: {self.variable_name}, variable_value: {self.variable_value})"

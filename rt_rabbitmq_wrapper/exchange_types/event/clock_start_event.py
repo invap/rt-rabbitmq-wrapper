@@ -10,18 +10,19 @@ class ClockStartEvent(TimedEvent):
         super().__init__(time)
         self._clock_name = clock_name
 
+    @property
     def clock_name(self):
         return self._clock_name
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         return "clock_start"
 
     def process_with(self, monitor):
         return monitor.process_clock_start(self)
 
     def __str__(self):
-        return f"(timestamp: {self.timestamp}) - clock_start(clock_name: {self._clock_name})"
+        return f"(timestamp: {self.timestamp}) - clock_start(clock_name: {self.clock_name})"
 
     def __repr__(self):
-        return f"(timestamp: {self.timestamp}) - clock_start(clock_name: {self._clock_name})"
+        return f"(timestamp: {self.timestamp}) - clock_start(clock_name: {self.clock_name})"

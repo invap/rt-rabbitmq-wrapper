@@ -10,18 +10,19 @@ class CheckpointReachedEvent(ProcessEvent):
         super().__init__(time)
         self._name = name
 
+    @property
     def name(self):
         return self._name
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         return "checkpoint_reached"
 
     def process_with(self, monitor):
         return monitor.process_checkpoint_reached(self)
 
     def __str__(self):
-        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self._name})"
+        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self.name})"
 
     def __repr__(self):
-        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self._name})"
+        return f"(timestamp: {self.timestamp}) - checkpoint_reached(name: {self.name})"

@@ -58,19 +58,19 @@ class EventCSVCoDec:
 
     @staticmethod
     def _clock_pause_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     @staticmethod
     def _clock_reset_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     @staticmethod
     def _clock_resume_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     @staticmethod
     def _clock_start_event_to_csv(event):
-        return f"{event.timestamp()},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
+        return f"{event.timestamp},{event.event_type()},{event.event_subtype()},{event.clock_name()}"
 
     # Converts a state spec to a csv entry
     @staticmethod

@@ -11,12 +11,12 @@ class TimedEvent(Event):
     def __init__(self, timestamp) -> None:
         super().__init__(timestamp)
 
-    @staticmethod
-    def event_type():
+    @property
+    def event_type(self):
         return "timed_event"
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         raise NoEventSubtypeError
 
     @abstractmethod

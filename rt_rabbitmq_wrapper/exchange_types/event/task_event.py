@@ -12,11 +12,12 @@ class TaskEvent(ProcessEvent):
         super().__init__(time)
         self._name = name
 
+    @property
     def name(self):
         return self._name
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         raise NoEventSubtypeError
 
     @abstractmethod

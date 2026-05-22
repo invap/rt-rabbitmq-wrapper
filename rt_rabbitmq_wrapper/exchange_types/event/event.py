@@ -19,15 +19,16 @@ class Event(ABC):
     def __init__(self, timestamp):
         self._timestamp = timestamp
 
+    @property
     def timestamp(self):
         return self._timestamp
 
-    @staticmethod
-    def event_type():
+    @property
+    def event_type(self):
         raise NoEventTypeError
 
-    @staticmethod
-    def event_subtype():
+    @property
+    def event_subtype(self):
         raise NoEventSubtypeError
 
     @abstractmethod
