@@ -47,7 +47,17 @@ class RabbitMQ_server_connection(ABC):
     def connect(self):
         raise NotImplementedError
 
-    def close(self):
+    def close_channel(self):
+        if self.channel and self.channel.is_open:
+            try:
+                self.channel.close()
+                logger.info(
+                    f"Channel for RabbitMQ server at {self.server_info.host}:{self.server_info.port} closed.")
+            except Exception as e:
+                logger.error(
+                    f"Error closing channel for RabbitMQ server at {self.server_info.host}:{self.server_info.port}: {e}.")
+
+    def close_connection(self):
         if self.connection and self.connection.is_open:
             try:
                 self.connection.close()
