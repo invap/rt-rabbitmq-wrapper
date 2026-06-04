@@ -114,7 +114,7 @@ class RabbitMQ_server_connection(ABC):
             self.channel.exchange_declare(
                 exchange=self.exchange,
                 exchange_type=self.exchange_type,
-                auto_delete=True,
+                auto_delete=False,
                 durable=False,
             )
         except ChannelClosed:

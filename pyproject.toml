@@ -25,5 +25,6 @@ packages = [
 
 [dependency-groups]
 dev = [
-    "pytomlcleaner>=1.0.0,<2.0.0"
+    "mypy (~=1.19.0)",
+    "pytomlcleaner (>=1.0.0,<2.0.0)"
 ]
